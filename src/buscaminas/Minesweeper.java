@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
 
-class Minesweeper extends JFrame implements ActionListener, ContainerListener {
+public class Minesweeper extends JFrame implements ActionListener, ContainerListener {
 
     int fw, fh, blockr, blockc, var1, var2, num_of_mine, detectedmine = 0, savedlevel = 1,
             savedblockr, savedblockc, savednum_of_mine = 10;
@@ -19,16 +19,16 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
     JPanel panelb = new JPanel();
     JPanel panelmt = new JPanel();
     JTextField tf_mine, tf_time;
-    JButton reset = new JButton("");
+    JButton b_reset = new JButton("");
     Random ranr = new Random();
     Random ranc = new Random();
     boolean check = true, starttime = false;
     Point framelocation;
-    Stopwatch sw;
-    MouseHendeler mh;
+    Reloj reloj;
+    MouseHandler mh;
     Point p;
 
-    Minesweeper() {
+    public Minesweeper() {
         super("Minesweeper");
         setLocation(400, 300);
 
@@ -36,16 +36,17 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
         setpanel(1, 0, 0, 0);
         setmanue();
 
-        sw = new Stopwatch();
+        reloj = new Reloj(tf_time);
 
-        reset.addActionListener(new ActionListener() {
+        b_reset.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    sw.stop();
+                    reloj.stop();
                     setpanel(savedlevel, savedblockr, savedblockc, savednum_of_mine);
                 } catch (Exception ex) {
-                    setpanel(savedlevel, savedblockr, savedblockc, savednum_of_mine);
+                    System.err.println(ex.toString());
+                    //setpanel(savedlevel, savedblockr, savedblockc, savednum_of_mine);
                 }
                 reset();
 
@@ -104,7 +105,7 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
         blocks = new JButton[blockr][blockc];
         countmine = new int[blockr][blockc];
         colour = new int[blockr][blockc];
-        mh = new MouseHendeler();
+        mh = new MouseHandler(this);
 
         getContentPane().removeAll();
         panelb.removeAll();
@@ -121,13 +122,13 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
         tf_time.setBackground(Color.BLACK);
         tf_time.setForeground(Color.RED);
         tf_time.setBorder(BorderFactory.createLoweredBevelBorder());
-        reset.setIcon(ic[11]);
-        reset.setBorder(BorderFactory.createLoweredBevelBorder());
+        b_reset.setIcon(ic[11]);
+        b_reset.setBorder(BorderFactory.createLoweredBevelBorder());
 
         panelmt.removeAll();
         panelmt.setLayout(new BorderLayout());
         panelmt.add(tf_mine, BorderLayout.WEST);
-        panelmt.add(reset, BorderLayout.CENTER);
+        panelmt.add(b_reset, BorderLayout.CENTER);
         panelmt.add(tf_time, BorderLayout.EAST);
         panelmt.setBorder(BorderFactory.createLoweredBevelBorder());
 
@@ -140,7 +141,6 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
             for (int j = 0; j < blockc; j++) {
                 blocks[i][j] = new JButton("");
 
-                //blocks[i][j].addActionListener(this);
                 blocks[i][j].addMouseListener(mh);
 
                 panelb.add(blocks[i][j]);
@@ -151,11 +151,9 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
 
         panelb.revalidate();
         panelb.repaint();
-        //getcontentpane().setOpaque(true);
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().addContainerListener(this);
-        //getContentPane().revalidate();
         getContentPane().repaint();
         getContentPane().add(panelb, BorderLayout.CENTER);
         getContentPane().add(panelmt, BorderLayout.NORTH);
@@ -182,12 +180,7 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-
-                        //panelb.removeAll();
-                        //reset();
                         setpanel(1, 0, 0, 0);
-                        //panelb.revalidate();
-                        //panelb.repaint();
                     }
                 });
 
@@ -235,13 +228,10 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                        //panelb.removeAll();
-                        Customizetion cus = new Customizetion();
                         reset();
                         panelb.revalidate();
                         panelb.repaint();
 
-                        //Minesweeper ob=new Minesweeper(4);
                         custom.setSelected(true);
                         savedlevel = 4;
                     }
@@ -293,38 +283,6 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
     public void actionPerformed(ActionEvent ae) {
     }
 
-    class MouseHendeler extends MouseAdapter {
-
-        public void mouseClicked(MouseEvent me) {
-            if (check == true) {
-                for (int i = 0; i < blockr; i++) {
-                    for (int j = 0; j < blockc; j++) {
-                        if (me.getSource() == blocks[i][j]) {
-                            var1 = i;
-                            var2 = j;
-                            i = blockr;
-                            break;
-                        }
-                    }
-                }
-
-                setmine();
-                calculation();
-                check = false;
-
-            }
-
-            showvalue(me);
-            winner();
-
-            if (starttime == false) {
-                sw.Start();
-                starttime = true;
-            }
-
-        }
-    }
-
     public void winner() {
         int q = 0;
         for (int k = 0; k < blockr; k++) {
@@ -344,7 +302,7 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
                 }
             }
 
-            sw.stop();
+            reloj.stop();
             JOptionPane.showMessageDialog(this, "u R a lover");
         }
     }
@@ -376,8 +334,8 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
                                     blocks[k][l].removeMouseListener(mh);
                                 }
                             }
-                            sw.stop();
-                            reset.setIcon(ic[12]);
+                            reloj.stop();
+                            b_reset.setIcon(ic[12]);
                             JOptionPane.showMessageDialog(null, "sorry u R  loser");
                         } else if (countmine[i][j] == 0) {
                             dfs(i, j);
@@ -454,10 +412,6 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
                     dfs(R, C);
                 } else {
                     blocks[R][C].setIcon(ic[countmine[R][C]]);
-                    //blocks[R][C].setText(""+countmine[R][C]);
-
-                    //blocks[R][C].setBackground(Color.pink);
-                    //blocks[R][C].setFont(new Font("",Font.BOLD,));
                     colour[R][C] = 'b';
 
                 }
@@ -508,64 +462,6 @@ class Minesweeper extends JFrame implements ActionListener, ContainerListener {
         ic[10] = new ImageIcon("./src/img/flag.gif");
         ic[11] = new ImageIcon("./src/img/new game.gif");
         ic[12] = new ImageIcon("./src/img/crape.gif");
-    }
-
-    public class Stopwatch extends JFrame implements Runnable {
-
-        long startTime;
-        //final static java.text.SimpleDateFormat timerFormat = new java.text.SimpleDateFormat("mm : ss :SSS");
-        //final JButton startStopButton= new JButton("Start/stop");
-        Thread updater;
-        boolean isRunning = false;
-        long a = 0;
-        Runnable displayUpdater = new Runnable() {
-
-            public void run() {
-                displayElapsedTime(a);
-                a++;
-            }
-        };
-
-        public void stop() {
-            long elapsed = a;
-            isRunning = false;
-            try {
-                updater.join();
-            } catch (InterruptedException ie) {
-            }
-            displayElapsedTime(elapsed);
-            a = 0;
-        }
-
-        private void displayElapsedTime(long elapsedTime) {
-
-            if (elapsedTime >= 0 && elapsedTime < 9) {
-                tf_time.setText("00" + elapsedTime);
-            } else if (elapsedTime > 9 && elapsedTime < 99) {
-                tf_time.setText("0" + elapsedTime);
-            } else if (elapsedTime > 99 && elapsedTime < 999) {
-                tf_time.setText("" + elapsedTime);
-            }
-        }
-
-        public void run() {
-            try {
-                while (isRunning) {
-                    SwingUtilities.invokeAndWait(displayUpdater);
-                    Thread.sleep(1000);
-                }
-            } catch (java.lang.reflect.InvocationTargetException ite) {
-                ite.printStackTrace(System.err);
-            } catch (InterruptedException ie) {
-            }
-        }
-
-        public void Start() {
-            startTime = System.currentTimeMillis();
-            isRunning = true;
-            updater = new Thread(this);
-            updater.start();
-        }
     }
 
     class Customizetion extends JFrame implements ActionListener {
