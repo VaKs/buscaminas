@@ -14,14 +14,12 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
     int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
     JButton[][] bloques;
     int[][] valorBloque;
-    int[][] colour;
+    boolean[][] bloqueRevelado;
     ImageIcon[] ic = new ImageIcon[14];
     JPanel panelb = new JPanel();
     JPanel panelmt = new JPanel();
     JTextField tf_mine, tf_time;
     JButton b_reset = new JButton("");
-    Random ranr = new Random();
-    Random ranc = new Random();
     boolean casillasIniciadas = false, starttime = false;
     Point framelocation;
     Reloj reloj;
@@ -61,7 +59,7 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
         starttime = false;
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
-                colour[i][j] = 'w';
+                bloqueRevelado[i][j] = false;
             }
         }
     }
@@ -104,7 +102,7 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
 
         bloques = new JButton[bloquesFila][bloquesColumna];
         valorBloque = new int[bloquesFila][bloquesColumna];
-        colour = new int[bloquesFila][bloquesColumna];
+        bloqueRevelado = new boolean[bloquesFila][bloquesColumna];
         mh = new MouseHandler(this);
 
         getContentPane().removeAll();
@@ -165,15 +163,15 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
     public void setmanue() {
         JMenuBar bar = new JMenuBar();
 
-        JMenu game = new JMenu("GAME");
+        JMenu game = new JMenu("Opciones");
 
-        JMenuItem menuitem = new JMenuItem("new game");
-        final JCheckBoxMenuItem beginner = new JCheckBoxMenuItem("Begineer");
-        final JCheckBoxMenuItem intermediate = new JCheckBoxMenuItem("Intermediate");
-        final JCheckBoxMenuItem expart = new JCheckBoxMenuItem("Expart");
-        final JMenuItem exit = new JMenuItem("Exit");
-        final JMenu help = new JMenu("Help");
-        final JMenuItem helpitem = new JMenuItem("Help");
+        JMenuItem menuitem = new JMenuItem("Nueva Partida");
+        final JCheckBoxMenuItem beginner = new JCheckBoxMenuItem("Principiante");
+        final JCheckBoxMenuItem intermediate = new JCheckBoxMenuItem("Intermedio");
+        final JCheckBoxMenuItem expart = new JCheckBoxMenuItem("Experto");
+        final JMenuItem exit = new JMenuItem("Salir");
+        final JMenu help = new JMenu("Ayuda");
+        final JMenuItem helpitem = new JMenuItem("Ayuda");
 
         ButtonGroup status = new ButtonGroup();
 
@@ -274,7 +272,7 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
         int q = 0;
         for (int k = 0; k < bloquesFila; k++) {
             for (int l = 0; l < bloquesColumna; l++) {
-                if (colour[k][l] == 'w') {
+                if (bloqueRevelado[k][l] == false) {
                     q = 1;
                 }
             }
@@ -324,7 +322,7 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
                             break;
                         } else {
                             bloques[i][j].setIcon(ic[valorBloque[i][j]]);
-                            colour[i][j] = 'b';
+                            bloqueRevelado[i][j] = true;
                             break;
                         }
                     } else {
@@ -378,7 +376,7 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
     public void dfs(int fila, int columna) {
 
         int valorFila, valorColumna;
-        colour[fila][columna] = 'b';
+        bloqueRevelado[fila][columna] = true;
 
         bloques[fila][columna].setBackground(Color.GRAY);
 
@@ -387,12 +385,12 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
         for (int k = 0; k < 8; k++) {
             valorFila = fila + posicionFilasContiguas[k];
             valorColumna = columna + posicionColumnasContiguas[k];
-            if (valorFila >= 0 && valorFila < bloquesFila && valorColumna >= 0 && valorColumna < bloquesColumna && colour[valorFila][valorColumna] == 'w') {
+            if (valorFila >= 0 && valorFila < bloquesFila && valorColumna >= 0 && valorColumna < bloquesColumna && bloqueRevelado[valorFila][valorColumna] == false) {
                 if (valorBloque[valorFila][valorColumna] == 0) {
                     dfs(valorFila, valorColumna);
                 } else {
                     bloques[valorFila][valorColumna].setIcon(ic[valorBloque[valorFila][valorColumna]]);
-                    colour[valorFila][valorColumna] = 'b';
+                    bloqueRevelado[valorFila][valorColumna] = true;
 
                 }
             }
@@ -402,7 +400,9 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
     }
 // pone las minas despues del primer click
     public void setmine() {
-        int row = 0, col = 0;
+        Random filaAleatoria = new Random();
+        Random columnaAleatoria = new Random();
+        int fila = 0, columna = 0;
         Boolean[][] existeProvabilidadDeBomba = new Boolean[bloquesFila][bloquesColumna];
 
         for (int i = 0; i < bloquesFila; i++) {
@@ -413,20 +413,20 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
         }
 
         existeProvabilidadDeBomba[filaBotonClick][columnaBotonClick] = false;
-        colour[filaBotonClick][columnaBotonClick] = 'b';
+        bloqueRevelado[filaBotonClick][columnaBotonClick] = true;
 
         for (int i = 0; i < numeroMinas; i++) {
-            row = ranr.nextInt(bloquesFila);
-            col = ranc.nextInt(bloquesColumna);
+            fila = filaAleatoria.nextInt(bloquesFila);
+            columna = columnaAleatoria.nextInt(bloquesColumna);
 
-            if (existeProvabilidadDeBomba[row][col] == true) {
+            if (existeProvabilidadDeBomba[fila][columna] == true) {
                 //chetos
                 System.out.println("Mina "+i+":");
-                System.out.println("row "+row);
-                System.out.println("col "+col);
-                valorBloque[row][col] = -1;
-                colour[row][col] = 'b';
-                existeProvabilidadDeBomba[row][col] = false;
+                System.out.println("row "+fila);
+                System.out.println("col "+columna);
+                valorBloque[fila][columna] = -1;
+                bloqueRevelado[fila][columna] = true;
+                existeProvabilidadDeBomba[fila][columna] = false;
             } else {
                 i--;
             }
