@@ -18,7 +18,7 @@ public class MouseHandler extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent me) {    
         
-        if (buscaminas.check == true) {
+        if (buscaminas.casillasIniciadas == false) {
             for (int i = 0; i < buscaminas.bloquesFila; i++) {
                 for (int j = 0; j < buscaminas.bloquesColumna; j++) {
                     if (me.getSource() == buscaminas.bloques[i][j]) {
@@ -32,10 +32,10 @@ public class MouseHandler extends MouseAdapter {
 
             buscaminas.setmine();
             buscaminas.calculation();
-            buscaminas.check = false;
+            buscaminas.casillasIniciadas = true;
         }
 
-            buscaminas.showvalue(me);
+            buscaminas.revelarBloque(me);
             buscaminas.winner();
 
         if (buscaminas.starttime == false) {

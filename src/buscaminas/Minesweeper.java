@@ -8,12 +8,12 @@ import java.util.*;
 
 public class Minesweeper extends JFrame implements ActionListener, ContainerListener {
 
-    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, filaBotonClick, columnaBotonClick, numeroMinas, detectedmine = 0, savedlevel = 1,
+    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, filaBotonClick, columnaBotonClick, numeroMinas, banderasRestantes = 0, savedlevel = 1,
             savedbloquesFila, savedbloquesColumna, savednumeroMinas = 10;
-    int[] r = {-1, -1, -1, 0, 1, 1, 1, 0};
-    int[] c = {-1, 0, 1, 1, 1, 0, -1, -1};
+    int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
+    int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
     JButton[][] bloques;
-    int[][] countmine;
+    int[][] valorBloque;
     int[][] colour;
     ImageIcon[] ic = new ImageIcon[14];
     JPanel panelb = new JPanel();
@@ -22,7 +22,7 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
     JButton b_reset = new JButton("");
     Random ranr = new Random();
     Random ranc = new Random();
-    boolean check = true, starttime = false;
+    boolean casillasIniciadas = false, starttime = false;
     Point framelocation;
     Reloj reloj;
     MouseHandler mh;
@@ -57,7 +57,7 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
     }
 
     public void reset() {
-        check = true;
+        casillasIniciadas = false;
         starttime = false;
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
@@ -99,11 +99,11 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
 
         setSize(anchoVentana, altoVentana);
         setResizable(false);
-        detectedmine = numeroMinas;
+        banderasRestantes = numeroMinas;
         p = this.getLocation();
 
         bloques = new JButton[bloquesFila][bloquesColumna];
-        countmine = new int[bloquesFila][bloquesColumna];
+        valorBloque = new int[bloquesFila][bloquesColumna];
         colour = new int[bloquesFila][bloquesColumna];
         mh = new MouseHandler(this);
 
@@ -171,7 +171,6 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
         final JCheckBoxMenuItem beginner = new JCheckBoxMenuItem("Begineer");
         final JCheckBoxMenuItem intermediate = new JCheckBoxMenuItem("Intermediate");
         final JCheckBoxMenuItem expart = new JCheckBoxMenuItem("Expart");
-        final JCheckBoxMenuItem custom = new JCheckBoxMenuItem("Custom");
         final JMenuItem exit = new JMenuItem("Exit");
         final JMenu help = new JMenu("Help");
         final JMenuItem helpitem = new JMenuItem("Help");
@@ -226,18 +225,6 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
                     }
                 });
 
-        custom.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        reset();
-                        panelb.revalidate();
-                        panelb.repaint();
-
-                        custom.setSelected(true);
-                        savedlevel = 4;
-                    }
-                });
 
         exit.addActionListener(new ActionListener() {
 
@@ -259,14 +246,12 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
         status.add(beginner);
         status.add(intermediate);
         status.add(expart);
-        status.add(custom);
 
         game.add(menuitem);
         game.addSeparator();
         game.add(beginner);
         game.add(intermediate);
         game.add(expart);
-        game.add(custom);
         game.addSeparator();
         game.add(exit);
         help.add(helpitem);
@@ -297,7 +282,6 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
 
 
         if (q == 0) {
-            //panelb.hide();
             for (int k = 0; k < bloquesFila; k++) {
                 for (int l = 0; l < bloquesColumna; l++) {
                     bloques[k][l].removeMouseListener(mh);
@@ -308,24 +292,24 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
             JOptionPane.showMessageDialog(this, "u R a lover");
         }
     }
-
-    public void showvalue(MouseEvent e) {
+//mostrar el valor del bloque
+    public void revelarBloque(MouseEvent e) {
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
 
                 if (e.getSource() == bloques[i][j]) {
                     if (e.isMetaDown() == false) {
                         if (bloques[i][j].getIcon() == ic[10]) {
-                            if (detectedmine < numeroMinas) {
-                                detectedmine++;
+                            if (banderasRestantes < numeroMinas) {
+                                banderasRestantes++;
                             }
-                            tf_mine.setText("" + detectedmine);
+                            tf_mine.setText("" + banderasRestantes);
                         }
 
-                        if (countmine[i][j] == -1) {
+                        if (valorBloque[i][j] == -1) {
                             for (int k = 0; k < bloquesFila; k++) {
                                 for (int l = 0; l < bloquesColumna; l++) {
-                                    if (countmine[k][l] == -1) {
+                                    if (valorBloque[k][l] == -1) {
                                         bloques[k][l].setIcon(ic[9]);
                                         bloques[k][l].removeMouseListener(mh);
                                     }
@@ -334,21 +318,22 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
                             }
                             reloj.stop();
                             b_reset.setIcon(ic[12]);
-                            JOptionPane.showMessageDialog(null, "sorry u R  loser");
-                        } else if (countmine[i][j] == 0) {
+                            JOptionPane.showMessageDialog(null, "Has perdido");
+                        } else if (valorBloque[i][j] == 0) {
                             dfs(i, j);
+                            break;
                         } else {
-                            bloques[i][j].setIcon(ic[countmine[i][j]]);
+                            bloques[i][j].setIcon(ic[valorBloque[i][j]]);
                             colour[i][j] = 'b';
                             break;
                         }
                     } else {
-                        if (detectedmine != 0) {
+                        if (banderasRestantes != 0) {
                             if (bloques[i][j].getIcon() == null) {
-                                detectedmine--;
+                                banderasRestantes--;
                                 bloques[i][j].setIcon(ic[10]);
                             }
-                            tf_mine.setText("" + detectedmine);
+                            tf_mine.setText("" + banderasRestantes);
                         }
 
 
@@ -361,53 +346,53 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
     }
 // Revelar una casilla
     public void calculation() {
-        int row, column;
+        int fila, columna;
 
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
-                int value = 0;
-                int R, C;
-                row = i;
-                column = j;
+                int valor = 0;
+                int valorFila, valorColumna;
+                fila = i;
+                columna = j;
                 // calcula el numero que hay que descubrir
-                if (countmine[row][column] != -1) {
+                if (valorBloque[fila][columna] != -1) {
                     for (int k = 0; k < 8; k++) {
-                        R = row + r[k];
-                        C = column + c[k];
+                        valorFila = fila + posicionFilasContiguas[k];
+                        valorColumna = columna + posicionColumnasContiguas[k];
 
-                        if (R >= 0 && C >= 0 && R < bloquesFila && C < bloquesColumna) {
-                            if (countmine[R][C] == -1) {
-                                value++;
+                        if (valorFila >= 0 && valorColumna >= 0 && valorFila < bloquesFila && valorColumna < bloquesColumna) {
+                            if (valorBloque[valorFila][valorColumna] == -1) {
+                                valor++;
                             }
 
                         }
 
                     }
-                    countmine[row][column] = value;
+                    valorBloque[fila][columna] = valor;
 
                 }
             }
         }
     }
+// es un dfs realmente?
+    public void dfs(int fila, int columna) {
 
-    public void dfs(int row, int col) {
+        int valorFila, valorColumna;
+        colour[fila][columna] = 'b';
 
-        int R, C;
-        colour[row][col] = 'b';
+        bloques[fila][columna].setBackground(Color.GRAY);
 
-        bloques[row][col].setBackground(Color.GRAY);
+        bloques[fila][columna].setIcon(ic[valorBloque[fila][columna]]);
 
-        bloques[row][col].setIcon(ic[countmine[row][col]]);
-        //blocks[row][col].setText("");
-        for (int i = 0; i < 8; i++) {
-            R = row + r[i];
-            C = col + c[i];
-            if (R >= 0 && R < bloquesFila && C >= 0 && C < bloquesColumna && colour[R][C] == 'w') {
-                if (countmine[R][C] == 0) {
-                    dfs(R, C);
+        for (int k = 0; k < 8; k++) {
+            valorFila = fila + posicionFilasContiguas[k];
+            valorColumna = columna + posicionColumnasContiguas[k];
+            if (valorFila >= 0 && valorFila < bloquesFila && valorColumna >= 0 && valorColumna < bloquesColumna && colour[valorFila][valorColumna] == 'w') {
+                if (valorBloque[valorFila][valorColumna] == 0) {
+                    dfs(valorFila, valorColumna);
                 } else {
-                    bloques[R][C].setIcon(ic[countmine[R][C]]);
-                    colour[R][C] = 'b';
+                    bloques[valorFila][valorColumna].setIcon(ic[valorBloque[valorFila][valorColumna]]);
+                    colour[valorFila][valorColumna] = 'b';
 
                 }
             }
@@ -418,30 +403,30 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
 // pone las minas despues del primer click
     public void setmine() {
         int row = 0, col = 0;
-        Boolean[][] bandera = new Boolean[bloquesFila][bloquesColumna];
+        Boolean[][] existeProvabilidadDeBomba = new Boolean[bloquesFila][bloquesColumna];
 
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
-                bandera[i][j] = true;
-                countmine[i][j] = 0;
+                existeProvabilidadDeBomba[i][j] = true;
+                valorBloque[i][j] = 0;
             }
         }
 
-        bandera[filaBotonClick][columnaBotonClick] = false;
+        existeProvabilidadDeBomba[filaBotonClick][columnaBotonClick] = false;
         colour[filaBotonClick][columnaBotonClick] = 'b';
 
         for (int i = 0; i < numeroMinas; i++) {
             row = ranr.nextInt(bloquesFila);
             col = ranc.nextInt(bloquesColumna);
 
-            if (bandera[row][col] == true) {
+            if (existeProvabilidadDeBomba[row][col] == true) {
                 //chetos
                 System.out.println("Mina "+i+":");
                 System.out.println("row "+row);
                 System.out.println("col "+col);
-                countmine[row][col] = -1;
+                valorBloque[row][col] = -1;
                 colour[row][col] = 'b';
-                bandera[row][col] = false;
+                existeProvabilidadDeBomba[row][col] = false;
             } else {
                 i--;
             }
@@ -458,101 +443,6 @@ public class Minesweeper extends JFrame implements ActionListener, ContainerList
         ic[9] = new ImageIcon("./src/img/mine.gif");
         ic[10] = new ImageIcon("./src/img/flag.gif");
         ic[11] = new ImageIcon("./src/img/new game.gif");
-        ic[12] = new ImageIcon("./src/img/crape.gif");
-    }
-
-    class Customizetion extends JFrame implements ActionListener {
-
-        JTextField t1, t2, t3;
-        JLabel lb1, lb2, lb3;
-        JButton b1, b2;
-        int cr, cc, cm, actionc = 0;
-
-        Customizetion() {
-            super("CUSTOMIZETION");
-            setSize(180, 200);
-            setResizable(false);
-            setLocation(p);
-
-            t1 = new JTextField();
-            t2 = new JTextField();
-            t3 = new JTextField();
-
-            b1 = new JButton("OK");
-            b2 = new JButton("Cencel");
-
-            b1.addActionListener(this);
-            b2.addActionListener(this);
-
-            lb1 = new JLabel("Row");
-            lb2 = new JLabel("Column");
-            lb3 = new JLabel("mine");
-
-            getContentPane().setLayout(new GridLayout(0, 2));
-
-            getContentPane().add(lb1);
-            getContentPane().add(t1);
-            getContentPane().add(lb2);
-            getContentPane().add(t2);
-            getContentPane().add(lb3);
-            getContentPane().add(t3);
-
-            getContentPane().add(b1);
-            getContentPane().add(b2);
-
-            show();
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == b1) {
-                try {
-                    cr = Integer.parseInt(t1.getText());
-                    cc = Integer.parseInt(t2.getText());
-                    cm = Integer.parseInt(t3.getText());
-                    setpanel(4, row(), column(), mine());
-                    dispose();
-                } catch (Exception any) {
-                    JOptionPane.showMessageDialog(this, "Wrong");
-                    t1.setText("");
-                    t2.setText("");
-                    t3.setText("");
-                }
-
-            }
-
-            if (e.getSource() == b2) {
-                dispose();
-            }
-        }
-
-        public int row() {
-            if (cr > 30) {
-                return 30;
-            } else if (cr < 10) {
-                return 10;
-            } else {
-                return cr;
-            }
-        }
-
-        public int column() {
-            if (cc > 30) {
-                return 30;
-            } else if (cc < 10) {
-                return 10;
-            } else {
-                return cc;
-            }
-        }
-
-        public int mine() {
-            if (cm > ((row() - 1) * (column() - 1))) {
-                return ((row() - 1) * (column() - 1));
-            } else if (cm < 10) {
-                return 10;
-            } else {
-                return cm;
-            }
-        }
+        ic[12] = new ImageIcon("./src/img/crape.gif"); 
     }
 }
