@@ -7,7 +7,6 @@ package buscaminas;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JButton;
 
 public class MouseHandler extends MouseAdapter {
 
@@ -20,12 +19,12 @@ public class MouseHandler extends MouseAdapter {
     public void mouseClicked(MouseEvent me) {    
         
         if (buscaminas.check == true) {
-            for (int i = 0; i < buscaminas.blockr; i++) {
-                for (int j = 0; j < buscaminas.blockc; j++) {
-                    if (me.getSource() == buscaminas.blocks[i][j]) {
-                        buscaminas.var1 = i;
-                        buscaminas.var2 = j;
-                        i = buscaminas.blockr;
+            for (int i = 0; i < buscaminas.bloquesFila; i++) {
+                for (int j = 0; j < buscaminas.bloquesColumna; j++) {
+                    if (me.getSource() == buscaminas.bloques[i][j]) {
+                        buscaminas.filaBotonClick = i;
+                        buscaminas.columnaBotonClick = j;
+                        //i = buscaminas.bloquesFila;
                         break;
                     }
                 }
