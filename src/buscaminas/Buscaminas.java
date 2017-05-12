@@ -163,15 +163,16 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     public void setmanue() {
         JMenuBar bar = new JMenuBar();
 
-        JMenu game = new JMenu("Opciones");
+        JMenu opciones = new JMenu("Opciones");
 
         JMenuItem menuitem = new JMenuItem("Nueva Partida");
-        final JCheckBoxMenuItem beginner = new JCheckBoxMenuItem("Principiante");
-        final JCheckBoxMenuItem intermediate = new JCheckBoxMenuItem("Intermedio");
-        final JCheckBoxMenuItem expart = new JCheckBoxMenuItem("Experto");
-        final JMenuItem exit = new JMenuItem("Salir");
-        final JMenu help = new JMenu("Ayuda");
-        final JMenuItem helpitem = new JMenuItem("Ayuda");
+        final JCheckBoxMenuItem principiante = new JCheckBoxMenuItem("Principiante");
+        final JCheckBoxMenuItem intermedio = new JCheckBoxMenuItem("Intermedio");
+        final JCheckBoxMenuItem experto = new JCheckBoxMenuItem("Experto");
+        final JMenuItem salir = new JMenuItem("Salir");
+        final JMenu menuAyuda = new JMenu("Ayuda");
+        final JMenuItem ayuda = new JMenuItem("Ayuda");
+        final JMenuItem deshacer = new JMenuItem("Deshacer");
 
         ButtonGroup status = new ButtonGroup();
 
@@ -183,7 +184,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     }
                 });
 
-        beginner.addActionListener(
+        principiante.addActionListener(
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
@@ -192,11 +193,11 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                         setpanel(1, 0, 0, 0);
                         panelb.revalidate();
                         panelb.repaint();
-                        beginner.setSelected(true);
+                        principiante.setSelected(true);
                         savedlevel = 1;
                     }
                 });
-        intermediate.addActionListener(
+        intermedio.addActionListener(
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
@@ -205,11 +206,11 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                         setpanel(2, 0, 0, 0);
                         panelb.revalidate();
                         panelb.repaint();
-                        intermediate.setSelected(true);
+                        intermedio.setSelected(true);
                         savedlevel = 2;
                     }
                 });
-        expart.addActionListener(
+        experto.addActionListener(
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
@@ -218,20 +219,28 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                         setpanel(3, 0, 0, 0);
                         panelb.revalidate();
                         panelb.repaint();
-                        expart.setSelected(true);
+                        experto.setSelected(true);
                         savedlevel = 3;
                     }
                 });
 
 
-        exit.addActionListener(new ActionListener() {
+        salir.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
 
-        helpitem.addActionListener(new ActionListener() {
+        ayuda.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "instruction");
+
+            }
+        });
+        
+        ayuda.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "instruction");
@@ -241,21 +250,22 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
         setJMenuBar(bar);
 
-        status.add(beginner);
-        status.add(intermediate);
-        status.add(expart);
+        status.add(principiante);
+        status.add(intermedio);
+        status.add(experto);
 
-        game.add(menuitem);
-        game.addSeparator();
-        game.add(beginner);
-        game.add(intermediate);
-        game.add(expart);
-        game.addSeparator();
-        game.add(exit);
-        help.add(helpitem);
+        opciones.add(menuitem);
+        opciones.addSeparator();
+        opciones.add(principiante);
+        opciones.add(intermedio);
+        opciones.add(experto);
+        opciones.addSeparator();
+        opciones.add(salir);
+        menuAyuda.add(ayuda);
+        menuAyuda.add(deshacer);
 
-        bar.add(game);
-        bar.add(help);
+        bar.add(opciones);
+        bar.add(menuAyuda);
 
     }
 
