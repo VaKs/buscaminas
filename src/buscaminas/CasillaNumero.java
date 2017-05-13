@@ -20,9 +20,8 @@ public class CasillaNumero extends Casilla {
     @Override
     public void revelar() {
         this.setBandera(false);
-        this.setBackground(Color.GRAY);
-        
-
+        this.setBackground(Color.GRAY); 
+        this.setIcon(this.getIcono(this.getValor()));
     }
 
 }
