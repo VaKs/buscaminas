@@ -29,7 +29,7 @@ public class MouseHandler extends MouseAdapter {
             buscaminas.winner();
 
         if (buscaminas.starttime == false) {
-            buscaminas.reloj.Start();
+//            buscaminas.reloj.Start();
             buscaminas.starttime = true;
         }
     }

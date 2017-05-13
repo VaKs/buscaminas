@@ -6,23 +6,28 @@
 package buscaminas;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 /**
  *
  * @author VaKs
  */
-public abstract class Casilla extends Icasilla{
+public abstract class Casilla extends JButton {
 
-    private int fila;
-    private int columna;
+    int fila;
+    int columna;
     private ImageIcon[] iconos;
-    private int valor;
-    private boolean bandera;
+    private Integer valor;
+    boolean bandera;
     private boolean revelado;
 
+    public Casilla() {
+    }
+
+    ;
     public Casilla(int fila, int columna, int valor) {
         iconos = new ImageIcon[10];
-        this.revelado= false;
+        this.revelado = false;
         this.valor = valor;
         this.bandera = false;
         String name;
@@ -43,10 +48,8 @@ public abstract class Casilla extends Icasilla{
         return valor;
     }
 
-    @Override
-    public Casilla setValor(int valor) {
+    public void setValor(int valor) {
         this.valor = valor;
-        return this;
     }
 
     public boolean tieneBandera() {
@@ -55,8 +58,11 @@ public abstract class Casilla extends Icasilla{
 
     public void setBandera(boolean bandera) {
         this.bandera = bandera;
-        if (bandera) this.setIcon(this.iconos[10]);
-        else this.setIcon(null);
+        if (bandera) {
+            this.setIcon(this.iconos[10]);
+        } else {
+            this.setIcon(null);
+        }
     }
 
     /**
@@ -65,6 +71,8 @@ public abstract class Casilla extends Icasilla{
     public boolean isRevelado() {
         return revelado;
     }
+
+    public abstract void revelar();
 
     /**
      * @param revelado the revelado to set
@@ -99,6 +107,11 @@ public abstract class Casilla extends Icasilla{
      */
     public void setColumna(int columna) {
         this.columna = columna;
+    }
+
+    public boolean esMina() {
+        if(valor==null) return false;
+        return valor == -1;
     }
 
 }
