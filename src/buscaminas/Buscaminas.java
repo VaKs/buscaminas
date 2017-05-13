@@ -15,7 +15,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     JButton[][] bloques;
     int[][] valorBloque;
     boolean[][] bloqueRevelado;
-    ImageIcon[] ic = new ImageIcon[14];
+    ImageIcon[] ic = new ImageIcon[2];
     JPanel panelb = new JPanel();
     JPanel panelmt = new JPanel();
     JTextField tf_mine, tf_time;
@@ -122,7 +122,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         tf_time.setForeground(Color.RED);
         tf_time.setBorder(BorderFactory.createLoweredBevelBorder());
         
-        b_reset.setIcon(ic[11]);
+        b_reset.setIcon(ic[0]);
         b_reset.setBorder(BorderFactory.createLoweredBevelBorder());
 
         panelmt.removeAll();
@@ -315,7 +315,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                                 }
                             }
                             reloj.stop();
-                            b_reset.setIcon(ic[12]);
+                            b_reset.setIcon(ic[1]);
                             JOptionPane.showMessageDialog(null, "Has perdido");
                         } else if (valorBloque[i][j] == 0) {
                             dfs(i, j);
@@ -434,15 +434,8 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 
     public void setic() {
-        String name;
-
-        for (int i = 0; i <= 8; i++) {
-            name ="./src/img/" + i + ".gif";
-            ic[i] = new ImageIcon(name);
-        }
-        ic[9] = new ImageIcon("./src/img/mine.gif");
-        ic[10] = new ImageIcon("./src/img/flag.gif");
-        ic[11] = new ImageIcon("./src/img/new game.gif");
-        ic[12] = new ImageIcon("./src/img/crape.gif"); 
+        ic[0] = new ImageIcon("./src/img/new game.gif");
+        ic[1] = new ImageIcon("./src/img/crape.gif");
+         
     }
 }
