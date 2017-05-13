@@ -7,7 +7,6 @@
 package buscaminas;
 
 import java.awt.Color;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -24,7 +23,7 @@ public class CasillaMina extends Casilla{
         this.setRevelado(true);
         this.setBandera(false);
         this.setBackground(Color.GRAY);
-        this.setIcon(new ImageIcon("./src/img/mine.gif"));
+        this.setIcon(this.getIcono(9));
         
     }
 }
