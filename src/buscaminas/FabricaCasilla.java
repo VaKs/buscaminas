@@ -20,6 +20,5 @@ public class FabricaCasilla {
         } else {
             return new CasillaNumero(fila, columna, valor);
         }
-
     }
 }
