@@ -21,7 +21,7 @@ public abstract class Casilla extends Icasilla{
     private boolean revelado;
 
     public Casilla(int fila, int columna, int valor) {
-        iconos = new ImageIcon[9];
+        iconos = new ImageIcon[10];
         this.revelado= false;
         this.valor = valor;
         this.bandera = false;

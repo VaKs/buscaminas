@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.*;
+import java.math.*;
 
 public class Buscaminas extends JFrame implements ActionListener, ContainerListener {
 
@@ -311,6 +311,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                             break;
                         }
                     } else {
+                        // click derecho
                         if (banderasRestantes != 0) {
                             if (!casillas[i].isRevelado()) {
                                 banderasRestantes--;
@@ -394,23 +395,22 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 // pone las minas despues del primer click
     public void setmine() {
-        Random casillaAleatoria = new Random();
-        Icasilla casillaActual;
-        int indiceAleatorio=0;
+        int indiceAleatorio;
         
         
         for (int i = 0; i < numeroMinas; i++) {
-            indiceAleatorio = casillaAleatoria.nextInt(cantidadCasillas);
+            indiceAleatorio =(int) (Math.random() * cantidadCasillas);
             
             if (casillas[indiceAleatorio] instanceof CasillaMina) {
-                //chetos
+                
                 i--;
                 
             } else {
+                //chetos
                 System.out.println("Mina "+i+":");
                 System.out.println("row "+casillas[indiceAleatorio].getFila());
                 System.out.println("col "+casillas[indiceAleatorio].getColumna());
-                casillas[indiceAleatorio].setValor(-1);
+                casillas[indiceAleatorio]=casillas[indiceAleatorio].setValor(-1);
             }
         }
     }
