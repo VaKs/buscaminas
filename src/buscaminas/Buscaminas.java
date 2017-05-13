@@ -434,15 +434,8 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 
     public void setic() {
-        String name;
-
-        for (int i = 0; i <= 8; i++) {
-            name ="./src/img/" + i + ".gif";
-            ic[i] = new ImageIcon(name);
-        }
-        ic[9] = new ImageIcon("./src/img/mine.gif");
-        ic[10] = new ImageIcon("./src/img/flag.gif");
         ic[11] = new ImageIcon("./src/img/new game.gif");
-        ic[12] = new ImageIcon("./src/img/crape.gif"); 
+        ic[12] = new ImageIcon("./src/img/crape.gif");
+         
     }
 }
