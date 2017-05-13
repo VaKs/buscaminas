@@ -6,10 +6,13 @@
 
 package buscaminas;
 
+import javax.swing.JButton;
+
 /**
  *
  * @author VaKs
  */
-public interface Icasilla {
-    public Casilla setValor(int valor);
+public abstract class Icasilla extends JButton {
+    public abstract Casilla setValor(int valor);
+    public abstract boolean isRevelado();
 }

@@ -10,9 +10,10 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
     int anchoVentana, altoVentana, bloquesFila, bloquesColumna, filaBotonClick, columnaBotonClick, numeroMinas, banderasRestantes = 0, savedlevel = 1,
             savedbloquesFila, savedbloquesColumna, savednumeroMinas = 10;
+    int cantidadCasillas=bloquesFila* bloquesColumna;
     int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
     int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
-    JButton[][] bloques;
+    Icasilla[] casillas;
     int[][] valorBloque;
     boolean[][] bloqueRevelado;
     ImageIcon[] ic = new ImageIcon[2];
@@ -100,7 +101,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         banderasRestantes = numeroMinas;
         p = this.getLocation();
 
-        bloques = new JButton[bloquesFila][bloquesColumna];
+        casillas = new ProxyCasilla[bloquesColumna*bloquesFila];
         valorBloque = new int[bloquesFila][bloquesColumna];
         bloqueRevelado = new boolean[bloquesFila][bloquesColumna];
         mh = new MouseHandler(this);
@@ -136,15 +137,15 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         panelb.setPreferredSize(new Dimension(anchoVentana, altoVentana));
         panelb.setLayout(new GridLayout(0, bloquesColumna));
         panelb.addContainerListener(this);
-
+        
+        int indice=0;
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
-                bloques[i][j] = new JButton("");
-
-                bloques[i][j].addMouseListener(mh);
-
-                panelb.add(bloques[i][j]);
-
+                casillas[indice] = new ProxyCasilla(i,j);
+                casillas[indice].addMouseListener(mh);
+                panelb.add(casillas[indice]);
+                indice++;
+                
             }
         }
         reset();
@@ -269,13 +270,11 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 
     public void winner() {
-        int q = 0;
-        for (int k = 0; k < bloquesFila; k++) {
-            for (int l = 0; l < bloquesColumna; l++) {
-                if (bloqueRevelado[k][l] == false) {
+        boolean todasRevelado = false;
+        for (int k = 0; k < cantidadCasillas; k++) {
+                if (casillas[k].isRevelado()) {
                     q = 1;
                 }
-            }
         }
 
 

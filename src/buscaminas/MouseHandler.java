@@ -21,7 +21,7 @@ public class MouseHandler extends MouseAdapter {
         if (buscaminas.casillasIniciadas == false) {
             for (int i = 0; i < buscaminas.bloquesFila; i++) {
                 for (int j = 0; j < buscaminas.bloquesColumna; j++) {
-                    if (me.getSource() == buscaminas.bloques[i][j]) {
+                    if (me.getSource() == buscaminas.casillas[i][j]) {
                         buscaminas.filaBotonClick = i;
                         buscaminas.columnaBotonClick = j;
                         //i = buscaminas.bloquesFila;

@@ -13,15 +13,16 @@ import java.awt.Color;
  */
 public class CasillaVacia extends Casilla {
 
-    public CasillaVacia(int fila, int columna,int valor) {
-        super(fila, columna, valor);
+    public CasillaVacia(int fila, int columna, int valor) {
+        super(fila,columna,valor);
     }
-    
+
     @Override
-    public void revelar(){
-      this.setBackground(Color.GRAY); 
-      
+    public void revelar() {
+        this.setRevelado(true);
+        this.setBandera(false);
+        this.setBackground(Color.GRAY);
+
     }
-    
 
 }

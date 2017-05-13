@@ -14,11 +14,11 @@ public class FabricaCasilla{
     public static Casilla getCasilla(int fila, int columna, int valor) {
 
         if (valor == -1) {
-            return new CasillaMina(fila, columna, valor);
+            return new CasillaMina(fila,columna,valor);
         } else if (valor == 0) {
-            return new CasillaVacia(fila, columna, valor);
+            return new CasillaVacia(fila,columna,valor);
         } else {
-            return new CasillaNumero(fila, columna, valor);
+            return new CasillaNumero(fila,columna,valor);
         }
     }
 }

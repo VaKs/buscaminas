@@ -14,11 +14,12 @@ import java.awt.Color;
 public class CasillaNumero extends Casilla {
 
     public CasillaNumero(int fila, int columna, int valor) {
-        super(fila, columna, valor);
+        super(fila,columna,valor);
     }
 
     @Override
     public void revelar() {
+        this.setRevelado(true);
         this.setBandera(false);
         this.setBackground(Color.GRAY); 
         this.setIcon(this.getIcono(this.getValor()));
