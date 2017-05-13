@@ -295,9 +295,9 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                         tf_mine.setText("" + banderasRestantes);
                     }
 
-                    if (casillas[i] instanceof CasillaMina) {
+                    if (casillas[i].esMina()) {
                         for (int k = 0; k < cantidadCasillas; k++) {
-                            if (casillas[k] instanceof CasillaMina) {
+                            if (casillas[k].esMina()) {
                                 casillas[k].revelar();
                                 casillas[k].removeMouseListener(mh);
                             }
@@ -306,7 +306,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 //                            reloj.stop();
                         b_reset.setIcon(ic[1]);
                         JOptionPane.showMessageDialog(null, "Has perdido!");
-                    } else if (casillas[i] instanceof CasillaVacia) {
+                    } else if (casillas[i].esVacia()) {
                         dfs(casillas[i].getFila(), casillas[i].getColumna());
                         break;
                     } else {
@@ -384,7 +384,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
             Casilla casillaAdyacente = buscarCasilla(fila, columna);
 
             if (valorFila >= 0 && valorFila < bloquesFila && valorColumna >= 0 && valorColumna < bloquesColumna && !casillaAdyacente.isRevelado()) {
-                if (casillaAdyacente instanceof CasillaVacia) {
+                if (casillaAdyacente.esVacia()) {
                     dfs(valorFila, valorColumna);
                 } else {
                     casillaAdyacente.revelar();
@@ -402,7 +402,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         for (int i = 0; i < numeroMinas; i++) {
             indiceAleatorio = rand.nextInt(cantidadCasillas);
 
-            if (casillas[indiceAleatorio] instanceof CasillaMina) {
+            if (casillas[indiceAleatorio].esMina()) {
 
                 i--;
 

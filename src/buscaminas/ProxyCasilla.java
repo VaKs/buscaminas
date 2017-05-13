@@ -57,7 +57,11 @@ public class ProxyCasilla extends Casilla {
     @Override
     public boolean esMina(){
         return casilla!=null && casilla.getValor()==-1;
-    
+    }
+
+    @Override
+    public boolean esVacia(){
+        return casilla!=null && casilla.getValor()==0;
     }
 
 }

@@ -112,5 +112,9 @@ public abstract class Casilla extends JButton {
         if(valor==null) return false;
         return valor == -1;
     }
+    public boolean esVacia() {
+        if(valor==null) return false;
+        return valor == 0;
+    }
 
 }
