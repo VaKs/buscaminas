@@ -11,11 +11,11 @@ package buscaminas;
  */
 public class ProxyCasilla extends Casilla {
 
+    
     Casilla casilla=null;
 
     public ProxyCasilla(int fila, int columna) {
-        this.fila = fila;
-        this.columna = columna;
+        super(fila, columna);
         this.bandera= false;
         
     }
@@ -23,7 +23,7 @@ public class ProxyCasilla extends Casilla {
     @Override
     public void setValor(int valor) {
         if(casilla!=null) casilla.setValor(valor);
-        this.casilla=FabricaCasilla.getCasilla(fila, columna, valor);
+        this.casilla=FabricaCasilla.getCasilla(this.fila, this.columna, valor);
     }
 
     @Override
@@ -46,18 +46,17 @@ public class ProxyCasilla extends Casilla {
     @Override
     public int getFila() {
         if(casilla!=null) return casilla.getFila();
-        return fila;
+        return this.fila;
     }
     
     @Override
     public int getColumna() {
         if(casilla!=null) return casilla.getColumna();
-        return columna;
+        return this.columna;
     }
     @Override
     public boolean esMina(){
-        if(casilla!=null && casilla.getValor()==-1) return true;
-        return false;
+        return casilla!=null && casilla.getValor()==-1;
     
     }
 

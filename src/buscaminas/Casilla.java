@@ -16,19 +16,17 @@ public abstract class Casilla extends JButton {
 
     int fila;
     int columna;
-    private ImageIcon[] iconos;
+    private final ImageIcon[] iconos;
     private Integer valor;
     boolean bandera;
     private boolean revelado;
 
-    public Casilla() {
-    }
-
-    ;
-    public Casilla(int fila, int columna, int valor) {
-        iconos = new ImageIcon[10];
+    public Casilla(int fila, int columna) {
+        this.fila=fila;
+        this.columna=columna;
+        
+        this.iconos = new ImageIcon[10];
         this.revelado = false;
-        this.valor = valor;
         this.bandera = false;
         String name;
 
@@ -63,6 +61,7 @@ public abstract class Casilla extends JButton {
         } else {
             this.setIcon(null);
         }
+            
     }
 
     /**
