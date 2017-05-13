@@ -5,30 +5,46 @@
  */
 package buscaminas;
 
-import javax.swing.JButton;
-
 /**
  *
  * @author VaKs
  */
 public class ProxyCasilla extends Icasilla {
 
-    int fila;
-    int columna;
 
     public ProxyCasilla(int fila, int columna) {
         this.fila = fila;
         this.columna = columna;
+        this.bandera= false;
     }
 
     @Override
     public Casilla setValor(int valor) {
-        return FabricaCasilla.getCasilla(fila, columna, valor);
+        return FabricaCasilla.getCasilla(this.getFila(), this.getColumna(), valor);
     }
 
     @Override
     public boolean isRevelado() {
         return false;
+    }
+
+    @Override
+    public boolean tieneBandera() {
+        return bandera;
+    }
+
+    @Override
+    public void revelar() {
+    }
+
+    @Override
+    public int getFila() {
+        return fila;
+    }
+    
+    @Override
+    public int getColumna() {
+        return columna;
     }
 
 }

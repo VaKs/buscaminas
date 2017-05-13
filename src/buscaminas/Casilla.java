@@ -6,7 +6,6 @@
 package buscaminas;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 
 /**
  *
@@ -22,7 +21,7 @@ public abstract class Casilla extends Icasilla{
     private boolean revelado;
 
     public Casilla(int fila, int columna, int valor) {
-        iconos = new ImageIcon[10];
+        iconos = new ImageIcon[9];
         this.revelado= false;
         this.valor = valor;
         this.bandera = false;
@@ -33,7 +32,6 @@ public abstract class Casilla extends Icasilla{
             iconos[i] = new ImageIcon(name);
         }
         iconos[9] = new ImageIcon("./src/img/mine.gif");
-        iconos[10] = new ImageIcon("./src/img/flag.gif");
 
     }
 
@@ -60,8 +58,6 @@ public abstract class Casilla extends Icasilla{
         if (bandera) this.setIcon(this.iconos[10]);
         else this.setIcon(null);
     }
-
-    public abstract void revelar();
 
     /**
      * @return the revelado

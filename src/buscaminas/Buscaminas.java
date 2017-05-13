@@ -8,15 +8,13 @@ import java.util.*;
 
 public class Buscaminas extends JFrame implements ActionListener, ContainerListener {
 
-    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, filaBotonClick, columnaBotonClick, numeroMinas, banderasRestantes = 0, savedlevel = 1,
+    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0, savedlevel = 1,
             savedbloquesFila, savedbloquesColumna, savednumeroMinas = 10;
     int cantidadCasillas=bloquesFila* bloquesColumna;
     int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
     int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
     Icasilla[] casillas;
-    int[][] valorBloque;
-    boolean[][] bloqueRevelado;
-    ImageIcon[] ic = new ImageIcon[2];
+    ImageIcon[] ic = new ImageIcon[3];
     JPanel panelb = new JPanel();
     JPanel panelmt = new JPanel();
     JTextField tf_mine, tf_time;
@@ -58,9 +56,14 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     public void reset() {
         casillasIniciadas = false;
         starttime = false;
+        int indice=0;
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
-                bloqueRevelado[i][j] = false;
+                casillas[indice] = new ProxyCasilla(i,j);
+                casillas[indice].addMouseListener(mh);
+                panelb.add(casillas[indice]);
+                indice++;
+                
             }
         }
     }
@@ -102,8 +105,6 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         p = this.getLocation();
 
         casillas = new ProxyCasilla[bloquesColumna*bloquesFila];
-        valorBloque = new int[bloquesFila][bloquesColumna];
-        bloqueRevelado = new boolean[bloquesFila][bloquesColumna];
         mh = new MouseHandler(this);
 
         getContentPane().removeAll();
@@ -138,16 +139,6 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         panelb.setLayout(new GridLayout(0, bloquesColumna));
         panelb.addContainerListener(this);
         
-        int indice=0;
-        for (int i = 0; i < bloquesFila; i++) {
-            for (int j = 0; j < bloquesColumna; j++) {
-                casillas[indice] = new ProxyCasilla(i,j);
-                casillas[indice].addMouseListener(mh);
-                panelb.add(casillas[indice]);
-                indice++;
-                
-            }
-        }
         reset();
 
         panelb.revalidate();
@@ -270,65 +261,60 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 
     public void winner() {
-        boolean todasRevelado = false;
+        boolean todasReveladas = true;
         for (int k = 0; k < cantidadCasillas; k++) {
-                if (casillas[k].isRevelado()) {
-                    q = 1;
+                if (!casillas[k].isRevelado()) {
+                    todasReveladas = false;
                 }
         }
 
 
-        if (q == 0) {
-            for (int k = 0; k < bloquesFila; k++) {
-                for (int l = 0; l < bloquesColumna; l++) {
-                    bloques[k][l].removeMouseListener(mh);
-                }
+        if (todasReveladas) {
+            for (int k = 0; k < cantidadCasillas; k++){
+                    casillas[k].removeMouseListener(mh);
+            
             }
 
             reloj.stop();
-            JOptionPane.showMessageDialog(this, "u R a lover");
+            JOptionPane.showMessageDialog(this, "Has ganado!");
         }
     }
 //mostrar el valor del bloque
     public void revelarBloque(MouseEvent e) {
-        for (int i = 0; i < bloquesFila; i++) {
-            for (int j = 0; j < bloquesColumna; j++) {
+        for (int i = 0; i < cantidadCasillas; i++) {
 
-                if (e.getSource() == bloques[i][j]) {
+                if (e.getSource() == casillas[i]) {
                     if (e.isMetaDown() == false) {
-                        if (bloques[i][j].getIcon() == ic[10]) {
+                        if (casillas[i].tieneBandera()) {
                             if (banderasRestantes < numeroMinas) {
                                 banderasRestantes++;
                             }
                             tf_mine.setText("" + banderasRestantes);
                         }
 
-                        if (valorBloque[i][j] == -1) {
-                            for (int k = 0; k < bloquesFila; k++) {
-                                for (int l = 0; l < bloquesColumna; l++) {
-                                    if (valorBloque[k][l] == -1) {
-                                        bloques[k][l].setIcon(ic[9]);
-                                        bloques[k][l].removeMouseListener(mh);
+                        if (casillas[i] instanceof CasillaMina) {
+                            for (int k = 0; k < cantidadCasillas; k++) {
+                                    if (casillas[k] instanceof CasillaMina) {
+                                        casillas[k].revelar();
+                                        casillas[k].removeMouseListener(mh);
                                     }
-                                    bloques[k][l].removeMouseListener(mh);
-                                }
+                                    casillas[k].removeMouseListener(mh);
                             }
                             reloj.stop();
                             b_reset.setIcon(ic[1]);
-                            JOptionPane.showMessageDialog(null, "Has perdido");
-                        } else if (valorBloque[i][j] == 0) {
-                            dfs(i, j);
+                            JOptionPane.showMessageDialog(null, "Has perdido!");
+                        } else if (casillas[i] instanceof CasillaVacia) {
+                            dfs(casillas[i].getFila(), casillas[i].getColumna());
                             break;
                         } else {
-                            bloques[i][j].setIcon(ic[valorBloque[i][j]]);
-                            bloqueRevelado[i][j] = true;
+                            casillas[i].revelar();
                             break;
                         }
                     } else {
                         if (banderasRestantes != 0) {
-                            if (bloques[i][j].getIcon() == null) {
+                            if (!casillas[i].isRevelado()) {
                                 banderasRestantes--;
-                                bloques[i][j].setIcon(ic[10]);
+                                casillas[i].setIcon(ic[2]);
                             }
                             tf_mine.setText("" + banderasRestantes);
                         }
@@ -337,60 +323,69 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     }
                 }
 
-            }
+            
         }
 
     }
 // Revelar una casilla
     public void calculation() {
-        int fila, columna;
 
-        for (int i = 0; i < bloquesFila; i++) {
-            for (int j = 0; j < bloquesColumna; j++) {
+        for (int i = 0; i < cantidadCasillas; i++) {
                 int valor = 0;
                 int valorFila, valorColumna;
-                fila = i;
-                columna = j;
+
                 // calcula el numero que hay que descubrir
-                if (valorBloque[fila][columna] != -1) {
-                    for (int k = 0; k < 8; k++) {
-                        valorFila = fila + posicionFilasContiguas[k];
-                        valorColumna = columna + posicionColumnasContiguas[k];
+                if (casillas[i] instanceof CasillaMina) {
+                    
+                }else {
+                for (int k = 0; k < 8; k++) {
+                        valorFila = casillas[i].getFila() + posicionFilasContiguas[k];
+                        valorColumna = casillas[i].getColumna() + posicionColumnasContiguas[k];
 
                         if (valorFila >= 0 && valorColumna >= 0 && valorFila < bloquesFila && valorColumna < bloquesColumna) {
-                            if (valorBloque[valorFila][valorColumna] == -1) {
+                            if (casillas[i] instanceof CasillaMina) {
                                 valor++;
                             }
 
                         }
 
                     }
-                    valorBloque[fila][columna] = valor;
-
+                    casillas[i]=casillas[i].setValor(valor);
+                
                 }
-            }
+            
         }
     }
+    
+    public Icasilla buscarCasilla(int fila, int columna){
+        for (int i = 0; i < cantidadCasillas; i++) {
+            if(casillas[i].getFila()==fila && casillas[i].getColumna()== columna) return casillas[i];       
+        }
+        
+        return null;
+    
+    }
+    
 // es un dfs realmente?
     public void dfs(int fila, int columna) {
 
         int valorFila, valorColumna;
-        bloqueRevelado[fila][columna] = true;
-
-        bloques[fila][columna].setBackground(Color.GRAY);
-
-        bloques[fila][columna].setIcon(ic[valorBloque[fila][columna]]);
+        Icasilla casillaActual=buscarCasilla(fila, columna);
+        
+        
+        casillaActual.revelar();
 
         for (int k = 0; k < 8; k++) {
             valorFila = fila + posicionFilasContiguas[k];
             valorColumna = columna + posicionColumnasContiguas[k];
-            if (valorFila >= 0 && valorFila < bloquesFila && valorColumna >= 0 && valorColumna < bloquesColumna && bloqueRevelado[valorFila][valorColumna] == false) {
-                if (valorBloque[valorFila][valorColumna] == 0) {
+            
+            Icasilla casillaAdyacente=buscarCasilla(fila, columna);
+            
+            if (valorFila >= 0 && valorFila < bloquesFila && valorColumna >= 0 && valorColumna < bloquesColumna && !casillaAdyacente.isRevelado()) {
+                if (casillaAdyacente instanceof CasillaVacia) {
                     dfs(valorFila, valorColumna);
                 } else {
-                    bloques[valorFila][valorColumna].setIcon(ic[valorBloque[valorFila][valorColumna]]);
-                    bloqueRevelado[valorFila][valorColumna] = true;
-
+                    casillaAdyacente.revelar();
                 }
             }
 
@@ -399,35 +394,23 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 // pone las minas despues del primer click
     public void setmine() {
-        Random filaAleatoria = new Random();
-        Random columnaAleatoria = new Random();
-        int fila = 0, columna = 0;
-        Boolean[][] existeProvabilidadDeBomba = new Boolean[bloquesFila][bloquesColumna];
-
-        for (int i = 0; i < bloquesFila; i++) {
-            for (int j = 0; j < bloquesColumna; j++) {
-                existeProvabilidadDeBomba[i][j] = true;
-                valorBloque[i][j] = 0;
-            }
-        }
-
-        existeProvabilidadDeBomba[filaBotonClick][columnaBotonClick] = false;
-        bloqueRevelado[filaBotonClick][columnaBotonClick] = true;
-
+        Random casillaAleatoria = new Random();
+        Icasilla casillaActual;
+        int indiceAleatorio=0;
+        
+        
         for (int i = 0; i < numeroMinas; i++) {
-            fila = filaAleatoria.nextInt(bloquesFila);
-            columna = columnaAleatoria.nextInt(bloquesColumna);
-
-            if (existeProvabilidadDeBomba[fila][columna] == true) {
+            indiceAleatorio = casillaAleatoria.nextInt(cantidadCasillas);
+            
+            if (casillas[indiceAleatorio] instanceof CasillaMina) {
                 //chetos
-                System.out.println("Mina "+i+":");
-                System.out.println("row "+fila);
-                System.out.println("col "+columna);
-                valorBloque[fila][columna] = -1;
-                bloqueRevelado[fila][columna] = true;
-                existeProvabilidadDeBomba[fila][columna] = false;
-            } else {
                 i--;
+                
+            } else {
+                System.out.println("Mina "+i+":");
+                System.out.println("row "+casillas[indiceAleatorio].getFila());
+                System.out.println("col "+casillas[indiceAleatorio].getColumna());
+                casillas[indiceAleatorio].setValor(-1);
             }
         }
     }
@@ -435,6 +418,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     public void setic() {
         ic[0] = new ImageIcon("./src/img/new game.gif");
         ic[1] = new ImageIcon("./src/img/crape.gif");
+        ic[2] = new ImageIcon("./src/img/flag.gif");
          
     }
 }

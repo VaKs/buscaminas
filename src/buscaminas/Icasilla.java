@@ -13,6 +13,15 @@ import javax.swing.JButton;
  * @author VaKs
  */
 public abstract class Icasilla extends JButton {
+    
+    public int fila;
+    public int columna;
+    public boolean bandera;
+    
     public abstract Casilla setValor(int valor);
     public abstract boolean isRevelado();
+    public abstract boolean tieneBandera();
+    public abstract void revelar();
+    public abstract int getFila();
+    public abstract int getColumna();
 }
