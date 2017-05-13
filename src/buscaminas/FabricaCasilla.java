@@ -9,7 +9,7 @@ package buscaminas;
  *
  * @author VaKs
  */
-public class FabricaCasilla {
+public class FabricaCasilla{
 
     public static Casilla getCasilla(int fila, int columna, int valor) {
 

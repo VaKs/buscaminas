@@ -10,6 +10,6 @@ package buscaminas;
  *
  * @author VaKs
  */
-public interface Sujeto {
+public interface Icasilla {
     public Casilla setValor(int valor);
 }

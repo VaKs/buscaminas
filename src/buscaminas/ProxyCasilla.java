@@ -10,7 +10,7 @@ package buscaminas;
  *
  * @author VaKs
  */
-public class ProxyCasilla implements Sujeto{
+public class ProxyCasilla implements Icasilla{
     
     int fila;
     int columna;

@@ -12,7 +12,7 @@ import javax.swing.JButton;
  *
  * @author VaKs
  */
-public abstract class Casilla extends JButton {
+public abstract class Casilla extends JButton  implements Icasilla {
 
     private int fila;
     private int columna;
@@ -39,66 +39,40 @@ public abstract class Casilla extends JButton {
 
     }
 
-    /**
-     * @return the fila
-     */
     public int getFila() {
         return fila;
     }
 
-    /**
-     * @param fila the fila to set
-     */
     public void setFila(int fila) {
         this.fila = fila;
     }
-
-    /**
-     * @return the columna
-     */
+    
     public int getColumna() {
         return columna;
     }
 
-    /**
-     * @param columna the columna to set
-     */
     public void setColumna(int columna) {
         this.columna = columna;
     }
 
-    /**
-     * @param ic
-     * @return the icono
-     */
     public ImageIcon getIcono(int ic) {
         return iconos[ic];
     }
 
-    /**
-     * @return the valor
-     */
     public int getValor() {
         return valor;
     }
 
-    /**
-     * @param valor the valor to set
-     */
-    public void setValor(int valor) {
+    @Override
+    public Casilla setValor(int valor) {
         this.valor = valor;
+        return this;
     }
 
-    /**
-     * @return the bandera
-     */
-    public boolean isBandera() {
+    public boolean tieneBandera() {
         return bandera;
     }
 
-    /**
-     * @param bandera the bandera to set
-     */
     public void setBandera(boolean bandera) {
         this.bandera = bandera;
         if (bandera) this.setIcon(this.iconos[10]);
