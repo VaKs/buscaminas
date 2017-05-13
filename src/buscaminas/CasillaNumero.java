@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package buscaminas;
 
 import java.awt.Color;
@@ -12,8 +11,9 @@ import java.awt.Color;
  *
  * @author VaKs
  */
-public class CasillaMina extends Casilla{
-    public CasillaMina(int fila, int columna, int valor){
+public class CasillaNumero extends Casilla {
+
+    public CasillaNumero(int fila, int columna, int valor) {
         super(fila, columna, valor);
     }
 
@@ -21,7 +21,8 @@ public class CasillaMina extends Casilla{
     public void revelar() {
         this.setBandera(false);
         this.setBackground(Color.GRAY);
-        this.setIcon(this.getIcono(9));
         
+
     }
+
 }

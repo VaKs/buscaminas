@@ -16,12 +16,12 @@ public abstract class Casilla extends JButton {
 
     private int fila;
     private int columna;
-    private ImageIcon[] icono;
+    private ImageIcon[] iconos;
     private int valor;
     private boolean bandera;
 
     public Casilla(int fila, int columna, int valor) {
-        icono = new ImageIcon[10];
+        iconos = new ImageIcon[10];
         this.valor = valor;
         this.fila = fila;
         this.columna = columna;
@@ -30,12 +30,12 @@ public abstract class Casilla extends JButton {
 
         for (int i = 0; i <= 8; i++) {
             name = "./src/img/" + i + ".gif";
-            icono[i] = new ImageIcon(name);
+            iconos[i] = new ImageIcon(name);
         }
-        icono[9] = new ImageIcon("./src/img/mine.gif");
-        icono[10] = new ImageIcon("./src/img/flag.gif");
-        icono[11] = new ImageIcon("./src/img/new game.gif");
-        icono[12] = new ImageIcon("./src/img/crape.gif");
+        iconos[9] = new ImageIcon("./src/img/mine.gif");
+        iconos[10] = new ImageIcon("./src/img/flag.gif");
+        iconos[11] = new ImageIcon("./src/img/new game.gif");
+        iconos[12] = new ImageIcon("./src/img/crape.gif");
 
     }
 
@@ -72,7 +72,7 @@ public abstract class Casilla extends JButton {
      * @return the icono
      */
     public ImageIcon getIcono(int ic) {
-        return icono[ic];
+        return iconos[ic];
     }
 
     /**
@@ -101,6 +101,8 @@ public abstract class Casilla extends JButton {
      */
     public void setBandera(boolean bandera) {
         this.bandera = bandera;
+        if (bandera) this.setIcon(this.iconos[10]);
+        else this.setIcon(null);
     }
 
     public abstract void revelar();
