@@ -7,10 +7,6 @@ package buscaminas;
 
 import java.awt.Color;
 
-/**
- *
- * @author VaKs
- */
 public class ProxyCasilla extends Casilla {
 
     Casilla casilla = null;
