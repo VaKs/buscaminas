@@ -23,7 +23,7 @@ public class CasillaNumero extends Casilla {
         this.setRevelado(true);
         this.setBandera(false);
 //        this.setBackground(Color.GRAY); 
-        this.setIcon(this.getIcono(this.getValor()));
+//        this.setIcon(this.getIcono(this.getValor()));
     }
 
 }

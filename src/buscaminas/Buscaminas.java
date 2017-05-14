@@ -10,7 +10,7 @@ import java.util.*;
 public class Buscaminas extends JFrame implements ActionListener, ContainerListener {
 
     int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0, savedlevel = 1,
-            savedbloquesFila, savedbloquesColumna, savednumeroMinas = 10;
+            savedbloquesFila, savedbloquesColumna, savednumeroMinas;
     int cantidadCasillas;
     int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
     int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
@@ -27,7 +27,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     Point p;
 
     public Buscaminas() {
-        super("Minesweeper");
+        super("Buscaminas");
         setLocation(400, 300);
 
         setic();
@@ -43,14 +43,12 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     setpanel(savedlevel, savedbloquesFila, savedbloquesColumna, savednumeroMinas);
                 } catch (Exception ex) {
                     System.err.println(ex.toString());
-                    //setpanel(savedlevel, savedbloquesFila, savedbloquesColumna, savednumeroMinas);
                 }
-                reset();
 
             }
         });
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        show();
+//        show();
     }
 
     public void reset() {
@@ -174,50 +172,50 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         menuitem.addActionListener(
                 new ActionListener() {
 
-                    public void actionPerformed(ActionEvent e) {
-                        setpanel(1, 0, 0, 0);
-                    }
-                });
+            public void actionPerformed(ActionEvent e) {
+                setpanel(1, 0, 0, 0);
+            }
+        });
 
         beginner.addActionListener(
                 new ActionListener() {
 
-                    public void actionPerformed(ActionEvent e) {
-                        panelb.removeAll();
-                        reset();
-                        setpanel(1, 0, 0, 0);
-                        panelb.revalidate();
-                        panelb.repaint();
-                        beginner.setSelected(true);
-                        savedlevel = 1;
-                    }
-                });
+            public void actionPerformed(ActionEvent e) {
+                panelb.removeAll();
+                reset();
+                setpanel(1, 0, 0, 0);
+                panelb.revalidate();
+                panelb.repaint();
+                beginner.setSelected(true);
+                savedlevel = 1;
+            }
+        });
         intermediate.addActionListener(
                 new ActionListener() {
 
-                    public void actionPerformed(ActionEvent e) {
-                        panelb.removeAll();
-                        reset();
-                        setpanel(2, 0, 0, 0);
-                        panelb.revalidate();
-                        panelb.repaint();
-                        intermediate.setSelected(true);
-                        savedlevel = 2;
-                    }
-                });
+            public void actionPerformed(ActionEvent e) {
+                panelb.removeAll();
+                reset();
+                setpanel(2, 0, 0, 0);
+                panelb.revalidate();
+                panelb.repaint();
+                intermediate.setSelected(true);
+                savedlevel = 2;
+            }
+        });
         expart.addActionListener(
                 new ActionListener() {
 
-                    public void actionPerformed(ActionEvent e) {
-                        panelb.removeAll();
-                        reset();
-                        setpanel(3, 0, 0, 0);
-                        panelb.revalidate();
-                        panelb.repaint();
-                        expart.setSelected(true);
-                        savedlevel = 3;
-                    }
-                });
+            public void actionPerformed(ActionEvent e) {
+                panelb.removeAll();
+                reset();
+                setpanel(3, 0, 0, 0);
+                panelb.revalidate();
+                panelb.repaint();
+                expart.setSelected(true);
+                savedlevel = 3;
+            }
+        });
 
         exit.addActionListener(new ActionListener() {
 
@@ -229,7 +227,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         helpitem.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "instruction");
+                JOptionPane.showMessageDialog(null, "instruccion");
 
             }
         });
@@ -266,68 +264,56 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     public void winner() {
         boolean todasReveladas = true;
         for (int k = 0; k < cantidadCasillas; k++) {
-            if (!casillas[k].isRevelado()) {
-                todasReveladas = false;
-            }
+            if(!casillas[k].esMina()) todasReveladas=todasReveladas && casillas[k].isRevelado();
         }
 
         if (todasReveladas) {
             for (int k = 0; k < cantidadCasillas; k++) {
                 casillas[k].removeMouseListener(mh);
-
             }
 
 //            reloj.stop();
             JOptionPane.showMessageDialog(this, "Has ganado!");
         }
     }
-//mostrar el valor del bloque
 
-    public void revelarBloque(MouseEvent e) {
-        for (int i = 0; i < cantidadCasillas; i++) {
+    public void revelarBloque(int indiceClicado, boolean clickBotonDerecho) {
 
-            if (e.getSource() == casillas[i]) {
-                if (e.isMetaDown() == false) {
-                    if (casillas[i].tieneBandera()) {
-                        if (banderasRestantes < numeroMinas) {
-                            banderasRestantes++;
-                        }
-                        tf_mine.setText("" + banderasRestantes);
-                    }
-
-                    if (casillas[i].esMina()) {
-                        for (int k = 0; k < cantidadCasillas; k++) {
-                            if (casillas[k].esMina()) {
-                                casillas[k].revelar();
-                                casillas[k].removeMouseListener(mh);
-                            }
-                            casillas[k].removeMouseListener(mh);
-                        }
-//                            reloj.stop();
-                        b_reset.setIcon(ic[1]);
-                        JOptionPane.showMessageDialog(null, "Has perdido!");
-                    } else if (casillas[i].esVacia()) {
-                        dfs(casillas[i].getFila(), casillas[i].getColumna());
-                        break;
-                    } else {
-                        casillas[i].revelar();
-                        break;
-                    }
-                } else {
-                    // click derecho
-                    if (banderasRestantes != 0) {
-                        if (!casillas[i].isRevelado()) {
-                            banderasRestantes--;
-                            casillas[i].setIcon(ic[2]);
-                        }
-                        tf_mine.setText("" + banderasRestantes);
-                    }
-
+        if (!clickBotonDerecho) {
+            if (casillas[indiceClicado].tieneBandera()) {
+                if (banderasRestantes < numeroMinas) {
+                    banderasRestantes++;
                 }
+                tf_mine.setText("" + banderasRestantes);
+            }
+
+            if (casillas[indiceClicado].esMina()) {
+                for (int k = 0; k < cantidadCasillas; k++) {
+                    if (casillas[k].esMina()) {
+                        casillas[k].revelar();
+                        casillas[k].removeMouseListener(mh);
+                    }
+                    casillas[k].removeMouseListener(mh);
+                }
+//                            reloj.stop();
+                b_reset.setIcon(ic[1]);
+                JOptionPane.showMessageDialog(null, "Has perdido!");
+            } else if (casillas[indiceClicado].esVacia()) {
+                dfs(casillas[indiceClicado].getFila(), casillas[indiceClicado].getColumna());
+            } else {
+                casillas[indiceClicado].revelar();
+            }
+        } else {
+            // click derecho
+            if (banderasRestantes != 0) {
+                if (!casillas[indiceClicado].isRevelado()) {
+                    banderasRestantes--;
+                    casillas[indiceClicado].setIcon(ic[2]);
+                }
+                tf_mine.setText("" + banderasRestantes);
             }
 
         }
-
     }
 // Revelar una casilla
 
@@ -336,17 +322,14 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         for (int i = 0; i < cantidadCasillas; i++) {
             int valor = 0;
             int valorFila, valorColumna;
-            Casilla casillaAdyacente;
 
-            // calcula el numero que hay que descubrir
             if (!casillas[i].esMina()) {
                 for (int k = 0; k < 8; k++) {
                     valorFila = casillas[i].getFila() + posicionFilasContiguas[k];
                     valorColumna = casillas[i].getColumna() + posicionColumnasContiguas[k];
 
                     if (valorFila >= 0 && valorColumna >= 0 && valorFila < bloquesFila && valorColumna < bloquesColumna) {
-                        casillaAdyacente = buscarCasilla(valorFila, valorColumna);
-                        if (casillaAdyacente.esMina()) {
+                        if (casillas[buscarIndiceCasilla(valorFila, valorColumna)].esMina()) {
                             valor++;
                         }
 
@@ -358,51 +341,45 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         }
     }
 
-    public Casilla buscarCasilla(int fila, int columna) {
+    public int buscarIndiceCasilla(int fila, int columna) {
         for (int i = 0; i < cantidadCasillas; i++) {
             if ((casillas[i].getFila() == fila) && (casillas[i].getColumna() == columna)) {
-                return casillas[i];
+                return i;
             }
         }
 
-        return null;
+        return -1;
 
     }
 
-// es un dfs realmente?
     public void dfs(int fila, int columna) {
 
-        int valorFila, valorColumna;
-        Casilla casillaActual = buscarCasilla(fila, columna);
-
-        casillaActual.revelar();
+        int filaAdyacente, columnaAdyacente;
+        casillas[buscarIndiceCasilla(fila, columna)].revelar();
 
         for (int k = 0; k < 8; k++) {
-            valorFila = fila + posicionFilasContiguas[k];
-            valorColumna = columna + posicionColumnasContiguas[k];
-
-            Casilla casillaAdyacente = buscarCasilla(fila, columna);
-
-            if (valorFila >= 0 && valorFila < bloquesFila && valorColumna >= 0 && valorColumna < bloquesColumna && !casillaAdyacente.isRevelado()) {
-                if (casillaAdyacente.esVacia()) {
-                    dfs(valorFila, valorColumna);
-                } else {
-                    casillaAdyacente.revelar();
+            filaAdyacente = fila + posicionFilasContiguas[k];
+            columnaAdyacente = columna + posicionColumnasContiguas[k];
+            int indiceAdyacente = buscarIndiceCasilla(filaAdyacente, columnaAdyacente);
+            if ((filaAdyacente >= 0) && (filaAdyacente < bloquesFila) && (columnaAdyacente >= 0) && (columnaAdyacente < bloquesColumna) && (!casillas[indiceAdyacente].isRevelado())) {
+                if (casillas[indiceAdyacente].esVacia()) {
+                    dfs(filaAdyacente, columnaAdyacente);
+                } else if(!casillas[indiceAdyacente].esMina()){
+                    casillas[indiceAdyacente].revelar();
                 }
             }
 
         }
     }
-// pone las minas despues del primer click
 
-    public void setmine() {
+    public void setmine(int indiceClicado) {
         int indiceAleatorio;
         Random rand = new Random();
 
         for (int i = 0; i < numeroMinas; i++) {
             indiceAleatorio = rand.nextInt(cantidadCasillas);
 
-            if (casillas[indiceAleatorio].esMina()) {
+            if (casillas[indiceAleatorio].esMina() || indiceClicado == indiceAleatorio) {
 
                 i--;
 

@@ -11,26 +11,34 @@ import java.awt.event.MouseEvent;
 public class MouseHandler extends MouseAdapter {
 
     Buscaminas buscaminas;
-    public MouseHandler(Buscaminas buscamina){
-        buscaminas=buscamina;
-    }    
-    
+
+    public MouseHandler(Buscaminas buscamina) {
+        buscaminas = buscamina;
+    }
+
     @Override
-    public void mouseClicked(MouseEvent me) {    
-        
-        if (buscaminas.casillasIniciadas == false) {
-
-            buscaminas.setmine();
-            buscaminas.calculation();
-            buscaminas.casillasIniciadas = true;
+    public void mouseClicked(MouseEvent me) {
+        boolean isMetaDown=me.isMetaDown();
+        int indiceClicado = 0;
+        for (int i = 0; i < buscaminas.cantidadCasillas; i++) {
+            if (me.getSource() == buscaminas.casillas[i]) {
+                indiceClicado = i;
+                break;
+            }
         }
+            if (buscaminas.casillasIniciadas == false) {
 
-            buscaminas.revelarBloque(me);
+                buscaminas.setmine(indiceClicado);
+                buscaminas.calculation();
+                buscaminas.casillasIniciadas = true;
+            }
+
+            buscaminas.revelarBloque(indiceClicado,isMetaDown);
             buscaminas.winner();
 
-        if (buscaminas.starttime == false) {
+            if (buscaminas.starttime == false) {
 //            buscaminas.reloj.Start();
-            buscaminas.starttime = true;
+                buscaminas.starttime = true;
+            }
         }
     }
-}

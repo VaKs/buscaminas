@@ -22,7 +22,7 @@ public class CasillaVacia extends Casilla {
     public void revelar() {
         this.setRevelado(true);
         this.setBandera(false);
-        this.setBackground(Color.GRAY);
+//        this.setBackground(Color.GRAY);
 
     }
 

@@ -64,46 +64,28 @@ public abstract class Casilla extends JButton {
             
     }
 
-    /**
-     * @return the revelado
-     */
     public boolean isRevelado() {
         return revelado;
     }
 
     public abstract void revelar();
 
-    /**
-     * @param revelado the revelado to set
-     */
     public void setRevelado(boolean revelado) {
         this.revelado = revelado;
     }
 
-    /**
-     * @return the fila
-     */
     public int getFila() {
         return fila;
     }
 
-    /**
-     * @param fila the fila to set
-     */
     public void setFila(int fila) {
         this.fila = fila;
     }
 
-    /**
-     * @return the columna
-     */
     public int getColumna() {
         return columna;
     }
 
-    /**
-     * @param columna the columna to set
-     */
     public void setColumna(int columna) {
         this.columna = columna;
     }

@@ -22,8 +22,8 @@ public class CasillaMina extends Casilla{
     public void revelar() {
         this.setRevelado(true);
         this.setBandera(false);
-        this.setBackground(Color.GRAY);
-        this.setIcon(this.getIcono(9));
+//        this.setBackground(Color.GRAY);
+//        this.setIcon(this.getIcono(9));
         
     }
 }
