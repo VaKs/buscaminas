@@ -27,6 +27,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     MementoAlmacen almacen = new MementoAlmacen();
     boolean hasPerdido=false;
     boolean hasGanado=false;
+    FabricaCasilla fabricaCasilla= new FabricaCasilla();
 
     public Buscaminas() {
         super("Buscaminas");
@@ -60,7 +61,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         int indice = 0;
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
-                casillas[indice] = new ProxyCasilla(i, j);
+                casillas[indice] = fabricaCasilla.getCasilla(i, j);
                 casillas[indice].addMouseListener(mh);
                 panelb.add(casillas[indice]);
                 indice++;

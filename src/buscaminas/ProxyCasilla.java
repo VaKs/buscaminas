@@ -14,6 +14,7 @@ import java.awt.Color;
 public class ProxyCasilla extends Casilla {
 
     Casilla casilla = null;
+    FabricaCasilla fabricaCasilla= new FabricaCasilla();
 
     public ProxyCasilla(int fila, int columna) {
         super(fila, columna);
@@ -26,7 +27,7 @@ public class ProxyCasilla extends Casilla {
         if (casilla != null) {
             casilla.setValor(valor);
         }
-        this.casilla = FabricaCasilla.getCasilla(this.fila, this.columna, valor);
+        this.casilla = fabricaCasilla.getCasilla(this.fila, this.columna, valor);
     }
 
     @Override

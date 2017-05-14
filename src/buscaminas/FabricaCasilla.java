@@ -5,11 +5,7 @@
  */
 package buscaminas;
 
-/**
- *
- * @author VaKs
- */
-public class FabricaCasilla{
+public class FabricaCasilla{ 
 
     public static Casilla getCasilla(int fila, int columna, int valor) {
 
@@ -20,5 +16,9 @@ public class FabricaCasilla{
         } else {
             return new CasillaNumero(fila,columna,valor);
         }
+    }
+    public static Casilla getCasilla(int fila, int columna){
+        return new ProxyCasilla(fila,columna);
+    
     }
 }
