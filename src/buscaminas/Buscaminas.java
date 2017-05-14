@@ -454,6 +454,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         if (!memento.getBandera()) {
             casillas[memento.getIndiceCasilla()].setIcon(null);
             casillas[memento.getIndiceCasilla()].setBandera(false);
+            banderasRestantes++;
             tf_mine.setText("" + banderasRestantes);
         }
         if (memento.getBandera()) {
