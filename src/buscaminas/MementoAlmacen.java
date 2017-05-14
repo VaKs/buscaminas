@@ -5,18 +5,14 @@
  */
 package buscaminas;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
-/**
- *
- * @author vaks
- */
 public class MementoAlmacen {
 
-    private Stack estadosAnteriores = new Stack();
+    private final Stack estadosAnteriores = new Stack();
 
-    public void addMemento(Memento memento) {
+    public void addMemento(int indice, boolean bandera, boolean revelado) {
+        Memento memento= new Memento(indice, bandera, revelado);
         estadosAnteriores.add(memento);
     }
 

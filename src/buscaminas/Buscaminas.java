@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.event.*;
-import java.math.*;
 import java.util.*;
 
 public class Buscaminas extends JFrame implements ActionListener, ContainerListener {
@@ -26,7 +25,8 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     MouseHandler mh;
     Point p;
     MementoAlmacen almacen = new MementoAlmacen();
-    boolean hasPerdido;
+    boolean hasPerdido=false;
+    boolean hasGanado=false;
 
     public Buscaminas() {
         super("Buscaminas");
@@ -39,6 +39,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 //        reloj = new Reloj(tf_time);
         b_reset.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
 //                    reloj.stop();
@@ -174,6 +175,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         menuitem.addActionListener(
                 new ActionListener() {
 
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         setPanel(1, 0, 0, 0);
                     }
@@ -182,6 +184,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         principiante.addActionListener(
                 new ActionListener() {
 
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
                         reset();
@@ -195,6 +198,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         intermedio.addActionListener(
                 new ActionListener() {
 
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
                         reset();
@@ -208,6 +212,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         experto.addActionListener(
                 new ActionListener() {
 
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
                         reset();
@@ -221,6 +226,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
         salir.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
@@ -228,6 +234,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
         deshacer.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 restaurarMemento();
                 if (hasPerdido) {
@@ -237,6 +244,11 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     }
                     for (int j = 0; j < cantidadCasillas; j++) {
                         casillas[j].addMouseListener(mh);
+                    }
+                }else if (hasGanado) {
+                    hasGanado = false;
+                    for (int k = 0; k < cantidadCasillas; k++) {
+                        casillas[k].addMouseListener(mh);
                     }
                 }
                 b_reset.setIcon(ic[0]);
@@ -276,19 +288,20 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 
     public void compruebaGanador() {
-        boolean todasReveladas = true;
+        boolean todasReveladas=true;
         for (int k = 0; k < cantidadCasillas; k++) {
+            
             if (!casillas[k].esMina()) {
                 todasReveladas = todasReveladas && casillas[k].isRevelado();
             }
         }
-
         if (todasReveladas) {
             for (int k = 0; k < cantidadCasillas; k++) {
                 casillas[k].removeMouseListener(mh);
             }
 
 //            reloj.stop();
+            hasGanado=true;
             JOptionPane.showMessageDialog(this, "Has ganado!");
         }
     }
@@ -430,8 +443,8 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 
     public void guardarMemento(int indiceCasillaAlterada, boolean bandera, boolean revelado) {
-        Memento memento = new Memento(indiceCasillaAlterada, bandera, revelado);
-        almacen.addMemento(memento);
+        
+        almacen.addMemento(indiceCasillaAlterada, bandera, revelado);
     }
 
     public void restaurarMemento() {
