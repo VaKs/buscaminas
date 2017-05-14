@@ -6,6 +6,7 @@
 package buscaminas;
 
 import java.awt.Color;
+
 /**
  *
  * @author VaKs
@@ -48,8 +49,11 @@ public class ProxyCasilla extends Casilla {
     public void revelar() {
         if (casilla != null) {
             this.setBackground(Color.GRAY);
-            if(this.esMina()) this.setIcon(casilla.getIcono(9));
-            else if(!this.esVacia()) this.setIcon(casilla.getIcono(casilla.getValor()));
+            if (this.esMina()) {
+                this.setIcon(casilla.getIcono(9));
+            } else if (!this.esVacia()) {
+                this.setIcon(casilla.getIcono(casilla.getValor()));
+            }
             casilla.revelar();
         }
     }
@@ -80,4 +84,23 @@ public class ProxyCasilla extends Casilla {
         return casilla != null && casilla.getValor() == 0;
     }
 
+    @Override
+    public void setRevelado(boolean revelado) {
+        if (revelado) {
+            this.revelar();
+        } else {
+            casilla.setRevelado(false);
+            this.setIcon(null);
+            this.setBackground(null);
+        }
+    }
+
+    @Override
+    public void setBandera(boolean bandera) {
+        if (casilla != null) {
+            casilla.setBandera(bandera);
+        } else {
+            this.bandera = bandera;
+        }
+    }
 }

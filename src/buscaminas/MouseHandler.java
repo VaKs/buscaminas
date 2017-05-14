@@ -29,12 +29,12 @@ public class MouseHandler extends MouseAdapter {
             if (buscaminas.casillasIniciadas == false) {
 
                 buscaminas.setmine(indiceClicado);
-                buscaminas.calculation();
+                buscaminas.obtenerValorCasillas();
                 buscaminas.casillasIniciadas = true;
             }
 
-            buscaminas.revelarBloque(indiceClicado,isMetaDown);
-            buscaminas.winner();
+            buscaminas.revelarCasilla(indiceClicado,isMetaDown);
+            buscaminas.compruebaGanador();
 
             if (buscaminas.starttime == false) {
 //            buscaminas.reloj.Start();

@@ -56,12 +56,6 @@ public abstract class Casilla extends JButton {
 
     public void setBandera(boolean bandera) {
         this.bandera = bandera;
-        if (bandera) {
-            this.setIcon(this.iconos[10]);
-        } else {
-            this.setIcon(null);
-        }
-            
     }
 
     public boolean isRevelado() {
