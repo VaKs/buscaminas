@@ -325,10 +325,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     if (casillas[k].esMina()) {
                         guardarMemento(k, casillas[k].tieneBandera(), false);
                         casillas[k].revelar();
-
-//                        casillas[k].removeMouseListener(mh);
                     }
-//                    casillas[k].removeMouseListener(mh);
                 }
 //                            reloj.stop();
                 b_reset.setIcon(ic[1]);
@@ -336,7 +333,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
             } else if (casillas[indiceClicado].esVacia()) {
                 dfs(casillas[indiceClicado].getFila(), casillas[indiceClicado].getColumna());
             } else {
-
+                guardarMemento(indiceClicado,  casillas[indiceClicado].tieneBandera(),  casillas[indiceClicado].isRevelado());
                 casillas[indiceClicado].revelar();
             }
 
@@ -435,10 +432,10 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
     public void restaurarMemento() {
         Memento memento = almacen.getUltimoMemento();
-
-        casillas[memento.getIndiceCasilla()].setBandera(memento.getBandera());
-        if (memento.getBandera() && banderasRestantes < numeroMinas) {
-                    banderasRestantes++;
+        
+        if (!memento.getBandera()) {
+                    casillas[memento.getIndiceCasilla()].setIcon(null);
+                    casillas[memento.getIndiceCasilla()].setBandera(false);
                     tf_mine.setText("" + banderasRestantes);
          }
         if(memento.getBandera()) casillas[memento.getIndiceCasilla()].setIcon(ic[2]);
