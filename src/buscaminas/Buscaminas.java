@@ -174,50 +174,50 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         menuitem.addActionListener(
                 new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                setPanel(1, 0, 0, 0);
-            }
-        });
+                    public void actionPerformed(ActionEvent e) {
+                        setPanel(1, 0, 0, 0);
+                    }
+                });
 
         principiante.addActionListener(
                 new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                panelb.removeAll();
-                reset();
-                setPanel(1, 0, 0, 0);
-                panelb.revalidate();
-                panelb.repaint();
-                principiante.setSelected(true);
-                savedlevel = 1;
-            }
-        });
+                    public void actionPerformed(ActionEvent e) {
+                        panelb.removeAll();
+                        reset();
+                        setPanel(1, 0, 0, 0);
+                        panelb.revalidate();
+                        panelb.repaint();
+                        principiante.setSelected(true);
+                        savedlevel = 1;
+                    }
+                });
         intermedio.addActionListener(
                 new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                panelb.removeAll();
-                reset();
-                setPanel(2, 0, 0, 0);
-                panelb.revalidate();
-                panelb.repaint();
-                intermedio.setSelected(true);
-                savedlevel = 2;
-            }
-        });
+                    public void actionPerformed(ActionEvent e) {
+                        panelb.removeAll();
+                        reset();
+                        setPanel(2, 0, 0, 0);
+                        panelb.revalidate();
+                        panelb.repaint();
+                        intermedio.setSelected(true);
+                        savedlevel = 2;
+                    }
+                });
         experto.addActionListener(
                 new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                panelb.removeAll();
-                reset();
-                setPanel(3, 0, 0, 0);
-                panelb.revalidate();
-                panelb.repaint();
-                experto.setSelected(true);
-                savedlevel = 3;
-            }
-        });
+                    public void actionPerformed(ActionEvent e) {
+                        panelb.removeAll();
+                        reset();
+                        setPanel(3, 0, 0, 0);
+                        panelb.revalidate();
+                        panelb.repaint();
+                        experto.setSelected(true);
+                        savedlevel = 3;
+                    }
+                });
 
         salir.addActionListener(new ActionListener() {
 
@@ -234,6 +234,9 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     hasPerdido = false;
                     for (int i = 0; i < numeroMinas - 1; i++) {
                         restaurarMemento();
+                    }
+                    for (int j = 0; j < cantidadCasillas; j++) {
+                        casillas[j].addMouseListener(mh);
                     }
                 }
                 b_reset.setIcon(ic[0]);
@@ -326,6 +329,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                         guardarMemento(k, casillas[k].tieneBandera(), false);
                         casillas[k].revelar();
                     }
+                    casillas[k].removeMouseListener(mh);
                 }
 //                            reloj.stop();
                 b_reset.setIcon(ic[1]);
@@ -333,7 +337,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
             } else if (casillas[indiceClicado].esVacia()) {
                 dfs(casillas[indiceClicado].getFila(), casillas[indiceClicado].getColumna());
             } else {
-                guardarMemento(indiceClicado,  casillas[indiceClicado].tieneBandera(),  casillas[indiceClicado].isRevelado());
+                guardarMemento(indiceClicado, casillas[indiceClicado].tieneBandera(), casillas[indiceClicado].isRevelado());
                 casillas[indiceClicado].revelar();
             }
 
@@ -432,15 +436,17 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
     public void restaurarMemento() {
         Memento memento = almacen.getUltimoMemento();
-        
+
         if (!memento.getBandera()) {
-                    casillas[memento.getIndiceCasilla()].setIcon(null);
-                    casillas[memento.getIndiceCasilla()].setBandera(false);
-                    tf_mine.setText("" + banderasRestantes);
-         }
-        if(memento.getBandera()) casillas[memento.getIndiceCasilla()].setIcon(ic[2]);
-        else casillas[memento.getIndiceCasilla()].setIcon(null);
-        
+            casillas[memento.getIndiceCasilla()].setIcon(null);
+            casillas[memento.getIndiceCasilla()].setBandera(false);
+            tf_mine.setText("" + banderasRestantes);
+        }
+        if (memento.getBandera()) {
+            casillas[memento.getIndiceCasilla()].setIcon(ic[2]);
+        } else {
+            casillas[memento.getIndiceCasilla()].setIcon(null);
+        }
 
         casillas[memento.getIndiceCasilla()].setRevelado(false);
 
