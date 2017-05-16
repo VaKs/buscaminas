@@ -23,7 +23,7 @@ public class ProxyCasilla extends Casilla {
         if (casilla != null) {
             casilla.setValor(valor);
         }
-        this.casilla = fabricaCasilla.getCasilla(this.fila, this.columna, valor);
+        this.casilla = fabricaCasilla.crearCasilla(this.fila, this.columna, valor);
     }
 
     @Override

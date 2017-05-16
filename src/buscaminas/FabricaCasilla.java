@@ -7,7 +7,7 @@ package buscaminas;
 
 public class FabricaCasilla{ 
 
-    public static Casilla getCasilla(int fila, int columna, int valor) {
+    public static Casilla crearCasilla(int fila, int columna, int valor) {
 
         if (valor == -1) {
             return new CasillaMina(fila,columna,valor);
@@ -17,7 +17,7 @@ public class FabricaCasilla{
             return new CasillaNumero(fila,columna,valor);
         }
     }
-    public static Casilla getCasilla(int fila, int columna){
+    public static Casilla crearCasilla(int fila, int columna){
         return new ProxyCasilla(fila,columna);
     
     }

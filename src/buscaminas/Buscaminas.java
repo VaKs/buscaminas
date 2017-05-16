@@ -61,7 +61,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         int indice = 0;
         for (int i = 0; i < bloquesFila; i++) {
             for (int j = 0; j < bloquesColumna; j++) {
-                casillas[indice] = fabricaCasilla.getCasilla(i, j);
+                casillas[indice] = fabricaCasilla.crearCasilla(i, j);
                 casillas[indice].addMouseListener(mh);
                 panelb.add(casillas[indice]);
                 indice++;
@@ -239,11 +239,11 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
             public void actionPerformed(ActionEvent e) {
                 restaurarMemento();
 
-                if (hasPerdido) {
-                    hasPerdido = false;
+                if (hasPerdido) {                   
                     for (int i = 0; i < numeroMinas - 1; i++) {
                         restaurarMemento();
                     }
+                    hasPerdido = false;
                     for (int j = 0; j < cantidadCasillas; j++) {
                         casillas[j].addMouseListener(mh);
                     }
@@ -340,7 +340,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                 hasPerdido = true;
 
                 for (int k = 0; k < cantidadCasillas; k++) {
-                    if (casillas[k].esMina()) {
+                    if (casillas[k].esMina()&& !casillas[k].tieneBandera()) {
                         guardarMemento(k, casillas[k].tieneBandera(), false);
                         casillas[k].revelar();
                     }
@@ -358,7 +358,6 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
         }
     }
-// Revelar una casilla
 
     public void obtenerValorCasillas() {
 
@@ -453,6 +452,8 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         Memento memento = almacen.getUltimoMemento();
         int indiceMemento = memento.getIndiceCasilla();
 
+        casillas[indiceMemento].setRevelado(memento.getRevelado());
+        
         if (memento.getBandera()) {
             casillas[indiceMemento].setIcon(ic[2]);
             banderasRestantes--;
@@ -464,7 +465,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
             banderasRestantes++;
             tf_mine.setText("" + banderasRestantes);
         }
-        casillas[indiceMemento].setRevelado(memento.getRevelado());
+//        casillas[indiceMemento].setRevelado(memento.getRevelado());
         casillas[indiceMemento].setBandera(memento.getBandera());
     }
 
