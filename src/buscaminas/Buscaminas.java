@@ -407,7 +407,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         }
     }
 
-    public void setmine(int indiceClicado) {
+    public void ponerMinas(int indiceClicado) {
         int indiceAleatorio;
         Random rand = new Random();
 

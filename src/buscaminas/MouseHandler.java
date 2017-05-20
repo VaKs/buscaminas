@@ -28,7 +28,7 @@ public class MouseHandler extends MouseAdapter {
         }
             if (buscaminas.casillasIniciadas == false) {
 
-                buscaminas.setmine(indiceClicado);
+                buscaminas.ponerMinas(indiceClicado);
                 buscaminas.obtenerValorCasillas();
                 buscaminas.casillasIniciadas = true;
             }
