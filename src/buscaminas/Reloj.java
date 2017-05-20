@@ -3,75 +3,47 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package buscaminas;
 
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Reloj extends JFrame implements Runnable {
-
-    JTextField tf_time;
-    long startTime;
-    Thread updater;
-    boolean isRunning = false;
-    long a = 0;
+public class Reloj extends Thread{
     
-    public Reloj(JTextField tf_time){
-        this.tf_time=tf_time;
-        run();
-        
-    }
+    private final long tiempoInicial;
+    private final FrameReloj fmReloj;
+    private boolean relojActivo=true;
     
-    Runnable displayUpdater = new Runnable() {
-
-        public void run() {
-            mostrarTiempo(a);
-            a++;
-        }
-    };
-
-    public void stop() {
-        long elapsed = a;
-        isRunning = false;
-        try {
-            updater.join();
-        } catch (InterruptedException ie) {
-             System.err.print(ie.toString());
-        }
-        mostrarTiempo(elapsed);
-        a = 0;
+    public Reloj(long tiempoInicial, FrameReloj fmReloj){
+//        tiempoInicial=System.currentTimeMillis();
+        this.tiempoInicial=tiempoInicial;
+        this.fmReloj=fmReloj;
+        this.start();
+    
     }
 
-    private void mostrarTiempo(long tiempo) {
-
-        if (tiempo >= 0 && tiempo < 9) {
-            tf_time.setText("00" + tiempo);
-        } else if (tiempo > 9 && tiempo < 99) {
-            tf_time.setText("0" + tiempo);
-        } else if (tiempo > 99 && tiempo < 999) {
-            tf_time.setText("" + tiempo);
-        }
-    }
-
+    @Override
     public void run() {
+        while(relojActivo){
+            dormir();
+            fmReloj.mostrarTiempo(this.getSegundosTranscuridos());
+        }
+    } 
+    public int getSegundosTranscuridos(){
+        return (int) ((System.currentTimeMillis()-this.tiempoInicial) / 1000);
+        
+    
+    }
+    public void parar(){
+        relojActivo=false;
+    }
+    
+    public void dormir(){
         try {
-            while (isRunning) {
-                SwingUtilities.invokeAndWait(displayUpdater);
-                Thread.sleep(1000);
-            }
-        } catch (java.lang.reflect.InvocationTargetException ite) {
-            ite.printStackTrace(System.err);
-        } catch (InterruptedException ie) {
-            System.err.print(ie.toString());
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Reloj.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public void Start() {
-        startTime = System.currentTimeMillis();
-        isRunning = true;
-        updater = new Thread(this);
-        updater.start();
-    }
-
 }

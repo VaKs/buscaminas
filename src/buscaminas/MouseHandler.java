@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 public class MouseHandler extends MouseAdapter {
 
     Buscaminas buscaminas;
+//        Reloj reloj;
 
     public MouseHandler(Buscaminas buscamina) {
         buscaminas = buscamina;
@@ -31,15 +32,15 @@ public class MouseHandler extends MouseAdapter {
                 buscaminas.ponerMinas(indiceClicado);
                 buscaminas.obtenerValorCasillas();
                 buscaminas.casillasIniciadas = true;
+                buscaminas.fmReloj.iniciarReloj();
+                
             }
             if(clickDerecho) buscaminas.ponerQuitarBandera(indiceClicado);
             else buscaminas.revelarCasilla(indiceClicado);
             
+            
+            
             buscaminas.compruebaGanador();
 
-            if (buscaminas.starttime == false) {
-//            buscaminas.reloj.Start();
-                buscaminas.starttime = true;
-            }
         }
     }

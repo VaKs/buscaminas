@@ -21,7 +21,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     JButton b_reset = new JButton("");
     boolean casillasIniciadas = false, starttime = false;
     Point framelocation;
-//    Reloj reloj;
+    FrameReloj fmReloj;
     MouseHandler mh;
     Point p;
     MementoAlmacen almacen = MementoAlmacen.getAlmacen();
@@ -121,13 +121,8 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         tf_mine.setBackground(Color.BLACK);
         tf_mine.setForeground(Color.RED);
         tf_mine.setBorder(BorderFactory.createLoweredBevelBorder());
-
-        tf_time = new JTextField("000", 3);
-        tf_time.setEditable(false);
-        tf_time.setFont(new Font("DigtalFont.TTF", Font.BOLD, 25));
-        tf_time.setBackground(Color.BLACK);
-        tf_time.setForeground(Color.RED);
-        tf_time.setBorder(BorderFactory.createLoweredBevelBorder());
+        
+        fmReloj= new FrameReloj();
 
         b_reset.setBackground(Color.GRAY);
         b_reset.setIcon(ic[0]);
@@ -137,7 +132,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         panelmt.setLayout(new BorderLayout());
         panelmt.add(tf_mine, BorderLayout.WEST);
         panelmt.add(b_reset, BorderLayout.CENTER);
-        panelmt.add(tf_time, BorderLayout.EAST);
+        panelmt.add(fmReloj.tf_time, BorderLayout.EAST);
         panelmt.setBorder(BorderFactory.createLoweredBevelBorder());
 
         panelb.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), BorderFactory.createLoweredBevelBorder()));
@@ -248,6 +243,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     for (int j = 0; j < cantidadCasillas; j++) {
                         casillas[j].addMouseListener(mh);
                     }
+                    fmReloj.reiniciar();
                 } else if (hasGanado) {
                     hasGanado = false;
                     ultimaCasillaCambiada.restaurarMemento();
@@ -256,6 +252,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     for (int k = 0; k < cantidadCasillas; k++) {
                         casillas[k].addMouseListener(mh);
                     }
+                    fmReloj.reiniciar();
                 } else ultimaCasillaCambiada.restaurarMemento();
                 tf_mine.setText("" + banderasRestantes);
                 b_reset.setIcon(ic[0]);
@@ -307,8 +304,8 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                 casillas[k].removeMouseListener(mh);
             }
 
-//            reloj.stop();
             hasGanado = true;
+            fmReloj.pararReloj();
             JOptionPane.showMessageDialog(this, "Has ganado!");
         }
     }
@@ -348,9 +345,10 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     }
                     casillas[k].removeMouseListener(mh);
                 }
-//                            reloj.stop();
+                fmReloj.pararReloj();
                 b_reset.setIcon(ic[1]);
                 JOptionPane.showMessageDialog(null, "Has perdido!");
+                
             }else if (casillas[indiceClicado].esVacia()) {
                 dfs(casillas[indiceClicado].getFila(), casillas[indiceClicado].getColumna());
             } else {
