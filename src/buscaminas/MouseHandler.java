@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 public class MouseHandler extends MouseAdapter {
 
     Buscaminas buscaminas;
-//        Reloj reloj;
 
     public MouseHandler(Buscaminas buscamina) {
         buscaminas = buscamina;

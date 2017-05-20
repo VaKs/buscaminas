@@ -37,13 +37,11 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         this.setPanel(1, 0, 0, 0);
         this.setMenu();
 
-//        reloj = new Reloj(tf_time);
         b_reset.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-//                    reloj.stop();
                     setPanel(savedlevel, savedbloquesFila, savedbloquesColumna, savednumeroMinas);
                 } catch (Exception ex) {
                     System.err.println(ex.toString());
@@ -416,10 +414,6 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                 i--;
 
             } else {
-                System.out.println("Mina " + i + ":");
-                System.out.println("indice: " + indiceAleatorio + ":");
-                System.out.println("row " + casillas[indiceAleatorio].getFila());
-                System.out.println("col " + casillas[indiceAleatorio].getColumna());
                 casillas[indiceAleatorio].setValor(-1);
             }
         }
