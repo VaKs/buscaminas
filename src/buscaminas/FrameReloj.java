@@ -28,7 +28,6 @@ public class FrameReloj extends JFrame{
         tf_time.setBorder(BorderFactory.createLoweredBevelBorder());
     }
     public void iniciarReloj(){
-        //tiempoInicio=System.currentTimeMillis();
         reloj=new Reloj(System.currentTimeMillis(),this);
     
     }
