@@ -35,14 +35,6 @@ public class ProxyCasilla extends Casilla {
     }
 
     @Override
-    public boolean tieneBandera() {
-        if (casilla != null) {
-            return casilla.tieneBandera();
-        }
-        return bandera;
-    }
-
-    @Override
     public void revelar() {
         if (casilla != null) {
             this.setBackground(Color.GRAY);
@@ -92,12 +84,4 @@ public class ProxyCasilla extends Casilla {
         }
     }
 
-    @Override
-    public void setBandera(boolean bandera) {
-        if (casilla != null) {
-            casilla.setBandera(bandera);
-        } else {
-            this.bandera = bandera;
-        }
-    }
 }

@@ -24,7 +24,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 //    Reloj reloj;
     MouseHandler mh;
     Point p;
-    MementoAlmacen almacen = new MementoAlmacen();
+    MementoAlmacen almacen = MementoAlmacen.getAlmacen();
     boolean hasPerdido = false;
     boolean hasGanado = false;
     FabricaCasilla fabricaCasilla = new FabricaCasilla();
@@ -33,9 +33,9 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         super("Buscaminas");
         setLocation(400, 300);
 
-        setIcono();
-        setPanel(1, 0, 0, 0);
-        setMenu();
+        this.setIcono();
+        this.setPanel(1, 0, 0, 0);
+        this.setMenu();
 
 //        reloj = new Reloj(tf_time);
         b_reset.addActionListener(new ActionListener() {
@@ -130,6 +130,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         tf_time.setForeground(Color.RED);
         tf_time.setBorder(BorderFactory.createLoweredBevelBorder());
 
+        b_reset.setBackground(Color.GRAY);
         b_reset.setIcon(ic[0]);
         b_reset.setBorder(BorderFactory.createLoweredBevelBorder());
 
@@ -237,11 +238,13 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                restaurarMemento();
+                Casilla ultimaCasillaCambiada= casillas[almacen.getIndiceUltimoMemento()];
 
-                if (hasPerdido) {                   
-                    for (int i = 0; i < numeroMinas - 1; i++) {
-                        restaurarMemento();
+                if (hasPerdido) { 
+                    for (int i = 0; i < numeroMinas; i++) {
+                        ultimaCasillaCambiada.restaurarMemento();
+                        if(ultimaCasillaCambiada.tieneBandera()) banderasRestantes--;
+                        ultimaCasillaCambiada=casillas[almacen.getIndiceUltimoMemento()];
                     }
                     hasPerdido = false;
                     for (int j = 0; j < cantidadCasillas; j++) {
@@ -249,10 +252,13 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                     }
                 } else if (hasGanado) {
                     hasGanado = false;
+                    ultimaCasillaCambiada.restaurarMemento();
+                    if(ultimaCasillaCambiada.tieneBandera()) banderasRestantes--;
+                    
                     for (int k = 0; k < cantidadCasillas; k++) {
                         casillas[k].addMouseListener(mh);
                     }
-                }
+                } else ultimaCasillaCambiada.restaurarMemento();
                 b_reset.setIcon(ic[0]);
 
             }
@@ -313,16 +319,15 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
         if (clickBotonDerecho) {
             if (banderasRestantes != 0 && !casillas[indiceClicado].isRevelado()) {
                 if (casillas[indiceClicado].tieneBandera()) {
-                    guardarMemento(indiceClicado, true, false);
+                    casillas[indiceClicado].guardarMemento();
                     banderasRestantes++;
                     casillas[indiceClicado].setIcon(null);
                     casillas[indiceClicado].setBandera(false);
 
                 } else {
-                    guardarMemento(indiceClicado, false, false);
+                    casillas[indiceClicado].guardarMemento();
                     banderasRestantes--;
                     casillas[indiceClicado].setBandera(true);
-                    casillas[indiceClicado].setIcon(ic[2]);
                 }
             }
             tf_mine.setText("" + banderasRestantes);
@@ -340,8 +345,8 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                 hasPerdido = true;
 
                 for (int k = 0; k < cantidadCasillas; k++) {
-                    if (casillas[k].esMina()&& !casillas[k].tieneBandera()) {
-                        guardarMemento(k, casillas[k].tieneBandera(), false);
+                    if (casillas[k].esMina()) {
+                        casillas[k].guardarMemento();
                         casillas[k].revelar();
                     }
                     casillas[k].removeMouseListener(mh);
@@ -352,7 +357,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
             } else if (casillas[indiceClicado].esVacia()) {
                 dfs(casillas[indiceClicado].getFila(), casillas[indiceClicado].getColumna());
             } else {
-                guardarMemento(indiceClicado, casillas[indiceClicado].tieneBandera(), casillas[indiceClicado].isRevelado());
+                casillas[indiceClicado].guardarMemento();
                 casillas[indiceClicado].revelar();
             }
 
@@ -439,34 +444,32 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     public void setIcono() {
         ic[0] = new ImageIcon("./src/img/new game.gif");
         ic[1] = new ImageIcon("./src/img/crape.gif");
-        ic[2] = new ImageIcon("./src/img/flag.gif");
-
     }
 
-    public void guardarMemento(int indiceCasillaAlterada, boolean bandera, boolean revelado) {
+//    public void guardarMemento(int fila, int columna, boolean bandera, boolean revelado) {
+//
+//        almacen.addMemento(fila, columna, bandera, revelado);
+//    }
 
-        almacen.addMemento(indiceCasillaAlterada, bandera, revelado);
-    }
-
-    public void restaurarMemento() {
-        Memento memento = almacen.getUltimoMemento();
-        int indiceMemento = memento.getIndiceCasilla();
-
-        casillas[indiceMemento].setRevelado(memento.getRevelado());
-        
-        if (memento.getBandera()) {
-            casillas[indiceMemento].setIcon(ic[2]);
-            banderasRestantes--;
-            tf_mine.setText("" + banderasRestantes);
-
-        } else if(casillas[indiceMemento].tieneBandera()) {
-
-            casillas[indiceMemento].setIcon(null);
-            banderasRestantes++;
-            tf_mine.setText("" + banderasRestantes);
-        }
+//    public void restaurarMemento() {
+//        Memento memento = almacen.getUltimoMemento();
+//        int indiceMemento = memento.getIndiceCasilla();
+//
 //        casillas[indiceMemento].setRevelado(memento.getRevelado());
-        casillas[indiceMemento].setBandera(memento.getBandera());
-    }
+//        
+//        if (memento.getBandera()) {
+//            casillas[indiceMemento].setIcon(ic[2]);
+//            banderasRestantes--;
+//            tf_mine.setText("" + banderasRestantes);
+//
+//        } else if(casillas[indiceMemento].tieneBandera()) {
+//
+//            casillas[indiceMemento].setIcon(null);
+//            banderasRestantes++;
+//            tf_mine.setText("" + banderasRestantes);
+//        }
+////        casillas[indiceMemento].setRevelado(memento.getRevelado());
+//        casillas[indiceMemento].setBandera(memento.getBandera());
+//    }
 
 }

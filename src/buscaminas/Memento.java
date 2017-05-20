@@ -10,9 +10,13 @@ public class Memento {
     private boolean bandera;
     private boolean revelado;
  
-    public Memento(int indice, boolean bandera, boolean revelado)
+    public Memento()
     {
-        this.indiceCasilla=indice;
+        
+    }
+    public Memento(int fila,int columna, boolean bandera, boolean revelado)
+    {
+        this.indiceCasilla=(fila*10)+columna;
         this.bandera=bandera;
         this.revelado=revelado;
         

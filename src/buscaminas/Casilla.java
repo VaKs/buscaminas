@@ -20,12 +20,13 @@ public abstract class Casilla extends JButton {
     private Integer valor;
     boolean bandera;
     private boolean revelado;
+    MementoAlmacen almacen = MementoAlmacen.getAlmacen();
 
     public Casilla(int fila, int columna) {
         this.fila=fila;
         this.columna=columna;
         
-        this.iconos = new ImageIcon[10];
+        this.iconos = new ImageIcon[11];
         this.revelado = false;
         this.bandera = false;
         String name;
@@ -35,6 +36,7 @@ public abstract class Casilla extends JButton {
             iconos[i] = new ImageIcon(name);
         }
         iconos[9] = new ImageIcon("./src/img/mine.gif");
+        iconos[10] = new ImageIcon("./src/img/flag.gif");
 
     }
 
@@ -56,6 +58,7 @@ public abstract class Casilla extends JButton {
 
     public void setBandera(boolean bandera) {
         this.bandera = bandera;
+        if(bandera)this.setIcon(iconos[10]);
     }
 
     public boolean isRevelado() {
@@ -92,5 +95,25 @@ public abstract class Casilla extends JButton {
         if(valor==null) return false;
         return valor == 0;
     }
+    public void guardarMemento() {
 
+        almacen.addMemento(this.fila, this.columna, this.bandera, this.revelado);
+    }
+    public void restaurarMemento() {
+        Memento memento = almacen.getUltimoMemento();
+
+        this.setRevelado(memento.getRevelado());
+        
+        if (memento.getBandera()) {
+            this.setIcon(iconos[10]);
+//            banderasRestantes--;
+
+        } else if(this.tieneBandera()) {
+
+            this.setIcon(null);
+//            banderasRestantes++;
+//            tf_mine.setText("" + banderasRestantes);
+        }
+        this.setBandera(memento.getBandera());
+    }
 }
