@@ -10,7 +10,7 @@ import java.awt.Color;
 public class ProxyCasilla extends Casilla {
 
     Casilla casilla = null;
-    FabricaCasilla fabricaCasilla= new FabricaCasilla();
+    FabricaCasilla fabricaCasilla=FabricaCasilla.getFabrica();
 
     public ProxyCasilla(int fila, int columna) {
         super(fila, columna);

@@ -6,6 +6,15 @@
 package buscaminas;
 
 public class FabricaCasilla{ 
+    private static FabricaCasilla fabricaCasilla;
+    
+    private FabricaCasilla(){
+    }
+    public static FabricaCasilla getFabrica(){
+        if(fabricaCasilla==null) fabricaCasilla= new FabricaCasilla();
+        return fabricaCasilla;
+    
+    }
 
     public static Casilla crearCasilla(int fila, int columna, int valor) {
 

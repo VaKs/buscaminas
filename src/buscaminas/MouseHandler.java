@@ -18,7 +18,7 @@ public class MouseHandler extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        boolean isMetaDown=me.isMetaDown();
+        boolean clickDerecho=me.isMetaDown();
         int indiceClicado = 0;
         for (int i = 0; i < buscaminas.cantidadCasillas; i++) {
             if (me.getSource() == buscaminas.casillas[i]) {
@@ -32,8 +32,9 @@ public class MouseHandler extends MouseAdapter {
                 buscaminas.obtenerValorCasillas();
                 buscaminas.casillasIniciadas = true;
             }
-
-            buscaminas.revelarCasilla(indiceClicado,isMetaDown);
+            if(clickDerecho) buscaminas.ponerQuitarBandera(indiceClicado);
+            else buscaminas.revelarCasilla(indiceClicado);
+            
             buscaminas.compruebaGanador();
 
             if (buscaminas.starttime == false) {
