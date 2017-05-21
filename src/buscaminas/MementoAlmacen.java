@@ -33,7 +33,10 @@ public class MementoAlmacen {
     public Memento getUltimoMemento() {
         return (Memento) estadosAnteriores.pop();
     }
-    public int getIndiceUltimoMemento(){
-        return estadosAnteriores.peek().getIndiceCasilla();
+    public int getFilaUltimoMemento(){
+        return estadosAnteriores.peek().getFila();
+    }
+    public int getColumnaUltimoMemento(){
+        return estadosAnteriores.peek().getColumna();
     }
 }

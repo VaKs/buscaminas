@@ -8,8 +8,8 @@ import java.util.*;
 
 public class Buscaminas extends JFrame implements ActionListener, ContainerListener {
 
-    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0, savedlevel = 1,
-            savedbloquesFila, savedbloquesColumna, savednumeroMinas;
+    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0, level = 1;
+            
     int cantidadCasillas;
     int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
     int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
@@ -42,7 +42,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    setPanel(savedlevel, savedbloquesFila, savedbloquesColumna, savednumeroMinas);
+                    setPanel(level, bloquesFila, bloquesColumna, numeroMinas);
                 } catch (Exception ex) {
                     System.err.println(ex.toString());
                 }
@@ -97,10 +97,6 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
             numeroMinas = setm;
             cantidadCasillas = bloquesColumna * bloquesFila;
         }
-
-        savedbloquesFila = bloquesFila;
-        savedbloquesColumna = bloquesColumna;
-        savednumeroMinas = numeroMinas;
 
         setSize(anchoVentana, altoVentana);
         setResizable(false);
@@ -186,7 +182,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                         panelb.revalidate();
                         panelb.repaint();
                         principiante.setSelected(true);
-                        savedlevel = 1;
+                        level = 1;
                     }
                 });
         intermedio.addActionListener(
@@ -200,7 +196,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                         panelb.revalidate();
                         panelb.repaint();
                         intermedio.setSelected(true);
-                        savedlevel = 2;
+                        level = 2;
                     }
                 });
         experto.addActionListener(
@@ -214,7 +210,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                         panelb.revalidate();
                         panelb.repaint();
                         experto.setSelected(true);
-                        savedlevel = 3;
+                        level = 3;
                     }
                 });
 
@@ -230,12 +226,12 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Casilla ultimaCasillaCambiada= casillas[almacen.getIndiceUltimoMemento()];
+                Casilla ultimaCasillaCambiada= casillas[buscarIndiceCasilla(almacen.getFilaUltimoMemento(), almacen.getColumnaUltimoMemento())];
 
                 if (hasPerdido) { 
                     for (int i = 0; i < numeroMinas; i++) {
                         ultimaCasillaCambiada.restaurarMemento();
-                        ultimaCasillaCambiada=casillas[almacen.getIndiceUltimoMemento()];
+                        ultimaCasillaCambiada=casillas[buscarIndiceCasilla(almacen.getFilaUltimoMemento(), almacen.getColumnaUltimoMemento())];
                     }
                     hasPerdido = false;
                     for (int j = 0; j < cantidadCasillas; j++) {
@@ -380,7 +376,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     }
 
     public int buscarIndiceCasilla(int fila, int columna) {
-        return (fila*10)+columna;
+        return (fila*bloquesColumna)+columna;
     }
 
     public void dfs(int fila, int columna) {
