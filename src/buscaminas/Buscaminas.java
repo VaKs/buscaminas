@@ -226,8 +226,9 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 Casilla ultimaCasillaCambiada= casillas[buscarIndiceCasilla(almacen.getFilaUltimoMemento(), almacen.getColumnaUltimoMemento())];
-
+                
                 if (hasPerdido) { 
                     for (int i = 0; i < numeroMinas; i++) {
                         ultimaCasillaCambiada.restaurarMemento();
@@ -251,6 +252,7 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
                 tf_mine.setText("" + banderasRestantes);
                 b_reset.setIcon(ic[0]);
 
+         
             }
         });
 
@@ -418,6 +420,23 @@ public class Buscaminas extends JFrame implements ActionListener, ContainerListe
     public void setIcono() {
         ic[0] = new ImageIcon("./src/img/new game.gif");
         ic[1] = new ImageIcon("./src/img/crape.gif");
+    }
+    public void heClickado(boolean clickDerecho, int indiceClicado){                
+            if (this.casillasIniciadas == false) {
+
+                this.ponerMinas(indiceClicado);
+                this.obtenerValorCasillas();
+                this.casillasIniciadas = true;
+                fmReloj.iniciarReloj();
+                
+            }
+            if(clickDerecho) this.ponerQuitarBandera(indiceClicado);
+            else this.revelarCasilla(indiceClicado);
+            
+            
+            
+            this.compruebaGanador();
+
     }
 
 }

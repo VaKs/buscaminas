@@ -8,10 +8,6 @@ package buscaminas;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-/**
- *
- * @author VaKs
- */
 public abstract class Casilla extends JButton {
 
     int fila;
