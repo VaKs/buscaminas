@@ -8,10 +8,6 @@ package buscaminas;
 
 import java.awt.Color;
 
-/**
- *
- * @author VaKs
- */
 public class CasillaMina extends Casilla{
     public CasillaMina(int fila, int columna, int valor){
         super(fila,columna);
