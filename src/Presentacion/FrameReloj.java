@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package buscaminas;
+package Presentacion;
 
+import Negocio.Reloj;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.BorderFactory;

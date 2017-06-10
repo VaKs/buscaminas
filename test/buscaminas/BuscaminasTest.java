@@ -5,17 +5,18 @@
  */
 package buscaminas;
 
+import Negocio.Buscaminas;
+import Presentacion.Casilla;
+import Presentacion.CasillaMina;
+import Presentacion.CasillaNumero;
+import Presentacion.CasillaVacia;
 import java.awt.event.ActionEvent;
 import java.awt.event.ContainerEvent;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-/**
- *
- * @author daguima
- */
 public class BuscaminasTest {
     
     public BuscaminasTest() {
@@ -34,7 +35,9 @@ public class BuscaminasTest {
      */
     @Test
     public void testReset() {
+        
         System.out.println("test del reset");
+        
         Buscaminas testDelReset = new Buscaminas();
         CasillaMina casillamina = new CasillaMina(1, 1, -1);
         CasillaVacia casillavacia = new CasillaVacia(2,2,0);

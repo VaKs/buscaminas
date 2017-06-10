@@ -4,10 +4,14 @@
  * and open the template in the editor.
  */
 
-package buscaminas;
+package Presentacion;
 
 import java.awt.Color;
 
+/**
+ *
+ * @author VaKs
+ */
 public class CasillaMina extends Casilla{
     public CasillaMina(int fila, int columna, int valor){
         super(fila,columna);
