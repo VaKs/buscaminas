@@ -1,4 +1,7 @@
-package Presentacion;
+
+import Presentacion.FrameBuscaminas;
+
+
 
 
 public class Main {

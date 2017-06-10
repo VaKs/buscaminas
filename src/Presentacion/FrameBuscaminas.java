@@ -28,10 +28,10 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
     private Buscaminas buscaminas;
     
     private ImageIcon[] ic = new ImageIcon[3];
-    private JPanel panelb = new JPanel();
-    private JPanel panelmt = new JPanel();
-    private JTextField tf_mine;
-    private JButton b_reset = new JButton("");
+    private JPanel panelFondo = new JPanel();
+    private JPanel panelCabecera = new JPanel();
+    private JTextField banderasRestantesText;
+    private JButton reiniciarBoton = new JButton("");
     private FrameReloj fmReloj;
     
     public FrameBuscaminas(){
@@ -54,29 +54,29 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
         this.setResizable(false);
 
         this.getContentPane().removeAll();
-        panelb.removeAll();
+        panelFondo.removeAll();
 
-        tf_mine = new JTextField("" + numeroMinas, 3);
-        tf_mine.setEditable(false);
-        tf_mine.setFont(new Font("DigtalFont.TTF", Font.BOLD, 25));
-        tf_mine.setBackground(Color.BLACK);
-        tf_mine.setForeground(Color.RED);
-        tf_mine.setBorder(BorderFactory.createLoweredBevelBorder());
+        banderasRestantesText = new JTextField("" + numeroMinas, 3);
+        banderasRestantesText.setEditable(false);
+        banderasRestantesText.setFont(new Font("DigtalFont.TTF", Font.BOLD, 25));
+        banderasRestantesText.setBackground(Color.BLACK);
+        banderasRestantesText.setForeground(Color.RED);
+        banderasRestantesText.setBorder(BorderFactory.createLoweredBevelBorder());
         
         fmReloj= new FrameReloj();
 
-        b_reset.setBackground(Color.GRAY);
-        b_reset.setIcon(ic[0]);
-        b_reset.setBorder(BorderFactory.createLoweredBevelBorder());
-        b_reset.addActionListener(
+        reiniciarBoton.setBackground(Color.GRAY);
+        reiniciarBoton.setIcon(ic[0]);
+        reiniciarBoton.setBorder(BorderFactory.createLoweredBevelBorder());
+        reiniciarBoton.addActionListener(
                     new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent ae) {
                             try {
-                                panelb.removeAll();
+                                panelFondo.removeAll();
                                 buscaminas.reiniciarNivel();
-                                panelb.revalidate();
-                                panelb.repaint();
+                                panelFondo.revalidate();
+                                panelFondo.repaint();
                             } catch (Exception ex) {
                                 System.err.println(ex.toString());
                             }
@@ -86,27 +86,27 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
                 );
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        panelmt.removeAll();
-        panelmt.setLayout(new BorderLayout());
-        panelmt.add(tf_mine, BorderLayout.WEST);
-        panelmt.add(b_reset, BorderLayout.CENTER);
-        panelmt.add(fmReloj.tf_time, BorderLayout.EAST);
-        panelmt.setBorder(BorderFactory.createLoweredBevelBorder());
+        panelCabecera.removeAll();
+        panelCabecera.setLayout(new BorderLayout());
+        panelCabecera.add(banderasRestantesText, BorderLayout.WEST);
+        panelCabecera.add(reiniciarBoton, BorderLayout.CENTER);
+        panelCabecera.add(fmReloj.tf_time, BorderLayout.EAST);
+        panelCabecera.setBorder(BorderFactory.createLoweredBevelBorder());
 
         
         
-        panelb.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), BorderFactory.createLoweredBevelBorder()));
-        panelb.setPreferredSize(new Dimension(anchoVentana, altoVentana));
-        panelb.setLayout(new GridLayout(0, bloquesColumna));
-        panelb.addContainerListener(this);
-        panelb.revalidate();
-        panelb.repaint();
+        panelFondo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), BorderFactory.createLoweredBevelBorder()));
+        panelFondo.setPreferredSize(new Dimension(anchoVentana, altoVentana));
+        panelFondo.setLayout(new GridLayout(0, bloquesColumna));
+        panelFondo.addContainerListener(this);
+        panelFondo.revalidate();
+        panelFondo.repaint();
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().addContainerListener(this);
         getContentPane().repaint();
-        getContentPane().add(panelb, BorderLayout.CENTER);
-        getContentPane().add(panelmt, BorderLayout.NORTH);
+        getContentPane().add(panelFondo, BorderLayout.CENTER);
+        getContentPane().add(panelCabecera, BorderLayout.NORTH);
         setVisible(true);
         
     }
@@ -136,10 +136,10 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        panelb.removeAll();
+                        panelFondo.removeAll();
                         buscaminas.reiniciarNivel();
-                        panelb.revalidate();
-                        panelb.repaint();
+                        panelFondo.revalidate();
+                        panelFondo.repaint();
                     }
                 });
 
@@ -148,10 +148,10 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        panelb.removeAll();
+                        panelFondo.removeAll();
                         buscaminas.setNivel(Nivel.PRINCIPIANTE);
-                        panelb.revalidate();
-                        panelb.repaint();
+                        panelFondo.revalidate();
+                        panelFondo.repaint();
                         principianteBoton.setSelected(true);
                         intermedioBoton.setSelected(false);
                         expertoBoton.setSelected(false);
@@ -162,10 +162,10 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        panelb.removeAll();
+                        panelFondo.removeAll();
                         buscaminas.setNivel(Nivel.INTERMEDIO);
-                        panelb.revalidate();
-                        panelb.repaint();
+                        panelFondo.revalidate();
+                        panelFondo.repaint();
                         intermedioBoton.setSelected(true);
                         principianteBoton.setSelected(false);
                         expertoBoton.setSelected(false);
@@ -176,10 +176,10 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        panelb.removeAll();
+                        panelFondo.removeAll();
                         buscaminas.setNivel(Nivel.EXPERTO);
-                        panelb.revalidate();
-                        panelb.repaint();
+                        panelFondo.revalidate();
+                        panelFondo.repaint();
                         intermedioBoton.setSelected(false);
                         principianteBoton.setSelected(false);
                         expertoBoton.setSelected(true);
@@ -227,27 +227,27 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
 
     }
     public void añadirCasillaAlPanel(Casilla casilla){
-        panelb.add(casilla);
+        panelFondo.add(casilla);
     }
     public void hasGanado(){
         fmReloj.pararReloj();
         JOptionPane.showMessageDialog(null, "Has ganado!");
     }
     public void actualizarContadorBnderas(int banderasRestantes){
-        tf_mine.setText("" + banderasRestantes);
+        banderasRestantesText.setText("" + banderasRestantes);
     }
     public void hasPerdido(){
         fmReloj.pararReloj();
-        b_reset.setIcon(ic[1]);
+        reiniciarBoton.setIcon(ic[1]);
         JOptionPane.showMessageDialog(null, "Has perdido!");
     }
     public void iniciarPartida(){
         fmReloj.iniciarReloj();
-        b_reset.setIcon(ic[0]);
+        reiniciarBoton.setIcon(ic[0]);
     }
     public void reiniciarPartida(){
         fmReloj.reiniciar();
-        b_reset.setIcon(ic[0]);
+        reiniciarBoton.setIcon(ic[0]);
     }
     
     @Override
