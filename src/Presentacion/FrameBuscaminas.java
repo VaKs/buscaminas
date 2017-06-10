@@ -1,11 +1,11 @@
-package buscaminas;
+package Presentacion;
 
+import Negocio.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ContainerEvent;
@@ -19,21 +19,20 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class FrameBuscaminas extends JFrame implements ActionListener, ContainerListener{
     
-    Buscaminas buscaminas;
+    private Buscaminas buscaminas;
     
-    ImageIcon[] ic = new ImageIcon[3];
-    JPanel panelb = new JPanel();
-    JPanel panelmt = new JPanel();
-    JTextField tf_mine, tf_time;
-    JButton b_reset = new JButton("");
-    Point framelocation;
-    FrameReloj fmReloj;
-    Point p;
+    private ImageIcon[] ic = new ImageIcon[3];
+    private JPanel panelb = new JPanel();
+    private JPanel panelmt = new JPanel();
+    private JTextField tf_mine;
+    private JButton b_reset = new JButton("");
+    private FrameReloj fmReloj;
     
     public FrameBuscaminas(){
         super("Buscaminas");
@@ -53,8 +52,6 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
             
         this.setSize(anchoVentana, altoVentana);
         this.setResizable(false);
-        buscaminas.banderasRestantes = numeroMinas;
-        p = this.getLocation();
 
         this.getContentPane().removeAll();
         panelb.removeAll();
@@ -71,18 +68,22 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
         b_reset.setBackground(Color.GRAY);
         b_reset.setIcon(ic[0]);
         b_reset.setBorder(BorderFactory.createLoweredBevelBorder());
-        b_reset.addActionListener(new ActionListener() {
+        b_reset.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent ae) {
+                            try {
+                                panelb.removeAll();
+                                buscaminas.reiniciarNivel();
+                                panelb.revalidate();
+                                panelb.repaint();
+                            } catch (Exception ex) {
+                                System.err.println(ex.toString());
+                            }
 
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    setPanel( anchoVentana,altoVentana,bloquesFila, bloquesColumna, numeroMinas);
-                } catch (Exception ex) {
-                    System.err.println(ex.toString());
-                }
-
-            }
-        });
+                        }
+                    }
+                );
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         panelmt.removeAll();
@@ -92,13 +93,12 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
         panelmt.add(fmReloj.tf_time, BorderLayout.EAST);
         panelmt.setBorder(BorderFactory.createLoweredBevelBorder());
 
+        
+        
         panelb.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), BorderFactory.createLoweredBevelBorder()));
         panelb.setPreferredSize(new Dimension(anchoVentana, altoVentana));
         panelb.setLayout(new GridLayout(0, bloquesColumna));
         panelb.addContainerListener(this);
-
-        buscaminas.reset();
-
         panelb.revalidate();
         panelb.repaint();
 
@@ -119,74 +119,74 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
     public void setMenu() {
         JMenuBar bar = new JMenuBar();
 
-        JMenu game = new JMenu("Opciones");
+        JMenu opcionesMenu = new JMenu("Opciones");
         
-        JMenuItem menuitem = new JMenuItem("Nueva Partida");
-        final JCheckBoxMenuItem principiante = new JCheckBoxMenuItem("Principiante");
-        final JCheckBoxMenuItem intermedio = new JCheckBoxMenuItem("Intermedio");
-        final JCheckBoxMenuItem experto = new JCheckBoxMenuItem("Experto");
-        final JMenuItem salir = new JMenuItem("Salir");
-        final JMenu help = new JMenu("Ayuda");
-        final JMenuItem deshacer = new JMenuItem("Deshacer paso");
+        JMenuItem nuevaPartidaBoton = new JMenuItem("Nueva Partida");
+        final JCheckBoxMenuItem principianteBoton = new JCheckBoxMenuItem("Principiante");
+        final JCheckBoxMenuItem intermedioBoton = new JCheckBoxMenuItem("Intermedio");
+        final JCheckBoxMenuItem expertoBoton = new JCheckBoxMenuItem("Experto");
+        final JMenuItem salirBoton = new JMenuItem("Salir");
+        final JMenu ayudaMenu = new JMenu("Ayuda");
+        final JMenuItem deshacerBoton = new JMenuItem("Deshacer paso");
 
         ButtonGroup status = new ButtonGroup();
 
-        menuitem.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        buscaminas.setNivel(Nivel.PRINCIPIANTE);
-                    }
-                });
-
-        principiante.addActionListener(
+        nuevaPartidaBoton.addActionListener(
                 new ActionListener() {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
-                        buscaminas.reset();
+                        buscaminas.reiniciarNivel();
+                        panelb.revalidate();
+                        panelb.repaint();
+                    }
+                });
+
+        principianteBoton.addActionListener(
+                new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        panelb.removeAll();
                         buscaminas.setNivel(Nivel.PRINCIPIANTE);
                         panelb.revalidate();
                         panelb.repaint();
-                        principiante.setSelected(true);
-                        intermedio.setSelected(false);
-                        experto.setSelected(false);
+                        principianteBoton.setSelected(true);
+                        intermedioBoton.setSelected(false);
+                        expertoBoton.setSelected(false);
                     }
                 });
-        intermedio.addActionListener(
+        intermedioBoton.addActionListener(
                 new ActionListener() {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
-                        buscaminas.reset();
                         buscaminas.setNivel(Nivel.INTERMEDIO);
                         panelb.revalidate();
                         panelb.repaint();
-                        intermedio.setSelected(true);
-                        principiante.setSelected(false);
-                        experto.setSelected(false);
+                        intermedioBoton.setSelected(true);
+                        principianteBoton.setSelected(false);
+                        expertoBoton.setSelected(false);
                     }
                 });
-        experto.addActionListener(
+        expertoBoton.addActionListener(
                 new ActionListener() {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
-                        buscaminas.reset();
                         buscaminas.setNivel(Nivel.EXPERTO);
                         panelb.revalidate();
                         panelb.repaint();
-                        intermedio.setSelected(false);
-                        principiante.setSelected(false);
-                        experto.setSelected(true);
+                        intermedioBoton.setSelected(false);
+                        principianteBoton.setSelected(false);
+                        expertoBoton.setSelected(true);
                     }
                 });
 
-        salir.addActionListener(new ActionListener() {
+        salirBoton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -194,7 +194,7 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
             }
         });
 
-        deshacer.addActionListener(new ActionListener() {
+        deshacerBoton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -207,26 +207,48 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
 
         setJMenuBar(bar);
 
-        status.add(principiante);
-        status.add(intermedio);
-        status.add(experto);
+        status.add(principianteBoton);
+        status.add(intermedioBoton);
+        status.add(expertoBoton);
 
-        game.add(menuitem);
-        game.addSeparator();
-        game.add(principiante);
-        game.add(intermedio);
-        game.add(experto);
-        game.addSeparator();
-        game.add(salir);
-        help.add(deshacer);
+        opcionesMenu.add(nuevaPartidaBoton);
+        opcionesMenu.addSeparator();
+        opcionesMenu.add(principianteBoton);
+        opcionesMenu.add(intermedioBoton);
+        opcionesMenu.add(expertoBoton);
+        opcionesMenu.addSeparator();
+        opcionesMenu.add(salirBoton);
+        ayudaMenu.add(deshacerBoton);
 
-        bar.add(game);
-        bar.add(help);
+        bar.add(opcionesMenu);
+        bar.add(ayudaMenu);
 
         show();
 
     }
-    
+    public void añadirCasillaAlPanel(Casilla casilla){
+        panelb.add(casilla);
+    }
+    public void hasGanado(){
+        fmReloj.pararReloj();
+        JOptionPane.showMessageDialog(null, "Has ganado!");
+    }
+    public void actualizarContadorBnderas(int banderasRestantes){
+        tf_mine.setText("" + banderasRestantes);
+    }
+    public void hasPerdido(){
+        fmReloj.pararReloj();
+        b_reset.setIcon(ic[1]);
+        JOptionPane.showMessageDialog(null, "Has perdido!");
+    }
+    public void iniciarPartida(){
+        fmReloj.iniciarReloj();
+        b_reset.setIcon(ic[0]);
+    }
+    public void reiniciarPartida(){
+        fmReloj.reiniciar();
+        b_reset.setIcon(ic[0]);
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {

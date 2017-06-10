@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package buscaminas;
+package Negocio;
 
+import Presentacion.FrameReloj;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

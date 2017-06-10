@@ -1,32 +1,34 @@
-package buscaminas;
+package Negocio;
 
-import javax.swing.*;
-import java.awt.event.*;
+import Presentacion.Casilla;
+import Presentacion.FabricaCasilla;
+import Presentacion.FrameBuscaminas;
+import Presentacion.ProxyCasilla;
 import java.util.*;
 
 public class Buscaminas {
     
     FrameBuscaminas FBuscaminas;
-
-    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0;
-    int cantidadCasillas;
-    int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
-    int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
-    Casilla[] casillas;
-    boolean casillasIniciadas = false, starttime = false;
-    MouseHandler mh;
-    MementoAlmacen almacen = MementoAlmacen.getAlmacen();
-    boolean hasPerdido = false;
-    boolean hasGanado = false;
-    FabricaCasilla fabricaCasilla = FabricaCasilla.getFabrica();
+    
+    private int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0;
+    private int cantidadCasillas;
+    private int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
+    private int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
+    private Casilla[] casillas;
+    private boolean casillasIniciadas = false, starttime = false;
+    private MouseHandler mh;
+    private MementoAlmacen almacen = MementoAlmacen.getAlmacen();
+    private boolean hasPerdido = false;
+    private boolean hasGanado = false;
+    private FabricaCasilla fabricaCasilla = FabricaCasilla.getFabrica();
 
     public Buscaminas(FrameBuscaminas fb) {
         
         FBuscaminas= fb;
-        this.reset();
+        this.iniciarCasillas();
     }
 
-    public void reset() {
+    public void iniciarCasillas() {
         casillasIniciadas = false;
         starttime = false;
         
@@ -38,7 +40,7 @@ public class Buscaminas {
             for (int j = 0; j < bloquesColumna; j++) {
                 casillas[indice] = fabricaCasilla.crearCasilla(i, j);
                 casillas[indice].addMouseListener(mh);
-                FBuscaminas.panelb.add(casillas[indice]);
+                FBuscaminas.añadirCasillaAlPanel(casillas[indice]);
                 indice++;
 
             }
@@ -53,12 +55,14 @@ public class Buscaminas {
             bloquesColumna = 10;
             cantidadCasillas = bloquesColumna * bloquesFila;
             numeroMinas = 10;
+            banderasRestantes=10;
         } else if (nivel==nivel.INTERMEDIO) {
             anchoVentana = 320;
             altoVentana = 416;
             bloquesFila = 16;
             bloquesColumna = 16;
             numeroMinas = 70;
+            banderasRestantes=70;
             cantidadCasillas = bloquesColumna * bloquesFila;
         } else if (nivel==nivel.EXPERTO) {
             anchoVentana = 400;
@@ -66,20 +70,16 @@ public class Buscaminas {
             bloquesFila = 20;
             bloquesColumna = 20;
             numeroMinas = 150;
+            banderasRestantes=150;
             cantidadCasillas = bloquesColumna * bloquesFila;
         }
         
         FBuscaminas.setPanel(anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas);
-
+        this.iniciarCasillas();
     }
-
-    public void componentAdded(ContainerEvent ce) {
-    }
-
-    public void componentRemoved(ContainerEvent ce) {
-    }
-
-    public void actionPerformed(ActionEvent ae) {
+    public void reiniciarNivel(){
+        FBuscaminas.setPanel(anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas);
+        this.iniciarCasillas();
     }
 
     public void compruebaGanador() {
@@ -96,8 +96,8 @@ public class Buscaminas {
             }
 
             hasGanado = true;
-            FBuscaminas.fmReloj.pararReloj();
-            JOptionPane.showMessageDialog(null, "Has ganado!");
+            FBuscaminas.hasGanado();
+            
         }
     }
 
@@ -114,7 +114,7 @@ public class Buscaminas {
                     banderasRestantes--;
                     casillas[indiceClicado].setBandera(true);
                 }
-            FBuscaminas.tf_mine.setText("" + banderasRestantes);
+            FBuscaminas.actualizarContadorBnderas(banderasRestantes);
     
     }
     public void revelarCasilla(int indiceClicado) {
@@ -122,7 +122,7 @@ public class Buscaminas {
             if (casillas[indiceClicado].tieneBandera()&& !casillas[indiceClicado].esMina()) {
                     banderasRestantes++;
                     casillas[indiceClicado].setIcon(null);
-                    FBuscaminas.tf_mine.setText("" + banderasRestantes);
+                    FBuscaminas.actualizarContadorBnderas(banderasRestantes);
             }
             
             if (casillas[indiceClicado].esMina()) {
@@ -136,12 +136,11 @@ public class Buscaminas {
                     }
                     casillas[k].removeMouseListener(mh);
                 }
-                FBuscaminas.fmReloj.pararReloj();
-                FBuscaminas.b_reset.setIcon(FBuscaminas.ic[1]);
-                JOptionPane.showMessageDialog(null, "Has perdido!");
+                
+                FBuscaminas.hasPerdido();
                 
             }else if (casillas[indiceClicado].esVacia()) {
-                dfs(casillas[indiceClicado].getFila(), casillas[indiceClicado].getColumna());
+                ExpandirDFS(casillas[indiceClicado].getFila(), casillas[indiceClicado].getColumna());
             } else {
                 casillas[indiceClicado].guardarMemento();
                 casillas[indiceClicado].revelar();
@@ -176,7 +175,7 @@ public class Buscaminas {
         return (fila*bloquesColumna)+columna;
     }
 
-    public void dfs(int fila, int columna) {
+    public void ExpandirDFS(int fila, int columna) {
 
         int filaAdyacente, columnaAdyacente;
         casillas[buscarIndiceCasilla(fila, columna)].revelar();
@@ -187,7 +186,7 @@ public class Buscaminas {
             int indiceAdyacente = buscarIndiceCasilla(filaAdyacente, columnaAdyacente);
             if ((filaAdyacente >= 0) && (filaAdyacente < bloquesFila) && (columnaAdyacente >= 0) && (columnaAdyacente < bloquesColumna) && (!casillas[indiceAdyacente].isRevelado())) {
                 if (casillas[indiceAdyacente].esVacia()) {
-                    dfs(filaAdyacente, columnaAdyacente);
+                    ExpandirDFS(filaAdyacente, columnaAdyacente);
                 } else if (!casillas[indiceAdyacente].esMina()) {
                     casillas[indiceAdyacente].revelar();
                 }
@@ -219,13 +218,11 @@ public class Buscaminas {
                 this.ponerMinas(indiceClicado);
                 this.obtenerValorCasillas();
                 this.casillasIniciadas = true;
-                FBuscaminas.fmReloj.iniciarReloj();
+                FBuscaminas.iniciarPartida();
                 
             }
             if(clickDerecho) this.ponerQuitarBandera(indiceClicado);
             else this.revelarCasilla(indiceClicado);
-            
-            
             
             this.compruebaGanador();
 
@@ -244,7 +241,7 @@ public class Buscaminas {
                     for (int j = 0; j < cantidadCasillas; j++) {
                         casillas[j].addMouseListener(mh);
                     }
-                    FBuscaminas.fmReloj.reiniciar();
+                    FBuscaminas.reiniciarPartida();
                 } else if (hasGanado) {
                     hasGanado = false;
                     ultimaCasillaCambiada.restaurarMemento();
@@ -253,10 +250,10 @@ public class Buscaminas {
                     for (int k = 0; k < cantidadCasillas; k++) {
                         casillas[k].addMouseListener(mh);
                     }
-                    FBuscaminas.fmReloj.reiniciar();
+                    FBuscaminas.reiniciarPartida();
                 } else ultimaCasillaCambiada.restaurarMemento();
-                FBuscaminas.tf_mine.setText("" + banderasRestantes);
-                FBuscaminas.b_reset.setIcon(FBuscaminas.ic[0]);
+                
+                FBuscaminas.actualizarContadorBnderas(banderasRestantes);
     
     }
 

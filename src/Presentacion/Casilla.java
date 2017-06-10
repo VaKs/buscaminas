@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package buscaminas;
+package Presentacion;
 
+import Negocio.Memento;
+import Negocio.MementoAlmacen;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 

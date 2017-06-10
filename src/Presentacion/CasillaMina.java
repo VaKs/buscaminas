@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package buscaminas;
+package Presentacion;
 
 import java.awt.Color;
 

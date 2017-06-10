@@ -1,4 +1,4 @@
-package buscaminas;
+package Negocio;
 
 public enum Nivel {
     PRINCIPIANTE,

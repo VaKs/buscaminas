@@ -1,4 +1,4 @@
-package buscaminas;
+package Presentacion;
 
 
 public class Main {
