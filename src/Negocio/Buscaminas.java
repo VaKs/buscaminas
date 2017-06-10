@@ -30,7 +30,6 @@ public class Buscaminas {
 
     public void iniciarCasillas() {
         casillasIniciadas = false;
-        starttime = false;
         
         casillas = new ProxyCasilla[cantidadCasillas];
         mh = new MouseHandler(this);
