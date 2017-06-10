@@ -38,8 +38,8 @@ public class Buscaminas {
         for (int i = 0; i < getBloquesFila(); i++) {
             for (int j = 0; j < getBloquesColumna(); j++) {
                 casillas[indice] = fabricaCasilla.crearCasilla(i, j);
-                getCasillas()[indice].addMouseListener(mh);
-                FBuscaminas.añadirCasillaAlPanel(getCasillas()[indice]);
+                casillas[indice].addMouseListener(mh);
+                FBuscaminas.añadirCasillaAlPanel(casillas[indice]);
                 indice++;
 
             }
