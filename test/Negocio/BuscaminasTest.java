@@ -119,10 +119,40 @@ public class BuscaminasTest {
     @Test
     public void testCompruebaGanador() {
         System.out.println("compruebaGanador");
-        Buscaminas instance = null;
+        if(instance.isHasGanado()) fail("hasGanado iniciado a true");
+        instance.ponerMinas(1);
+        instance.obtenerValorCasillas();
+        instance.setCasillasIniciadas(true);
+        fb.iniciarPartida();
+        Casilla[] casillas = instance.getCasillas();
+        
+        for(int i=0; i<casillas.length;i++){
+            if(!casillas[i].esMina()) casillas[i].setRevelado(true);
+        
+        }
+
+        instance.setCasillas(casillas);
         instance.compruebaGanador();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        if(!instance.isHasGanado()) fail("No se ha ganado con el resultado correcto");
+
+        instance.iniciarCasillas();
+        
+        instance.ponerMinas(1);
+        instance.obtenerValorCasillas();
+        instance.setCasillasIniciadas(true);
+        fb.iniciarPartida();
+        casillas = instance.getCasillas();
+        
+        for(int i=0; i<casillas.length-2;i++){
+            if(!casillas[i].esMina()) casillas[i].setRevelado(true);
+        
+        }
+
+        instance.setCasillas(casillas);
+        instance.compruebaGanador();
+        
+        assertTrue("Has ganado sin revelar todas las casillas", instance.isHasGanado());
     }
 
     @Test
@@ -180,25 +210,25 @@ public class BuscaminasTest {
     @Test
     public void testBuscarIndiceCasilla() {
         System.out.println("buscarIndiceCasilla");
-        int fila = 0;
-        int columna = 0;
-        Buscaminas instance = null;
-        int expResult = 0;
+        
+        instance.ponerMinas(1);
+        instance.obtenerValorCasillas();
+        instance.setCasillasIniciadas(true);
+        fb.iniciarPartida();
+        Casilla[] casillas = instance.getCasillas();
+        
+        int fila = 1;
+        int columna = 5;
         int result = instance.buscarIndiceCasilla(fila, columna);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testExpandirDFS() {
-        System.out.println("ExpandirDFS");
-        int fila = 0;
-        int columna = 0;
-        Buscaminas instance = null;
-        instance.ExpandirDFS(fila, columna);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("No ha encontrado la casilla correcta",casillas[15], casillas[result]);
+        assertFalse("No ha encontrado la casila",result==-1);
+        fila = 5;
+        columna = 5;
+        result = instance.buscarIndiceCasilla(fila, columna);
+        assertEquals("No ha encontrado la casilla correcta",casillas[15], casillas[result]);
+        assertFalse("No ha encontrado la casila",result==-1);
+        
+        
     }
 
     @Test
@@ -229,148 +259,5 @@ public class BuscaminasTest {
         instance.deshacer();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetAnchoVentana() {
-        System.out.println("getAnchoVentana");
-        Buscaminas instance = null;
-        int expResult = 0;
-        int result = instance.getAnchoVentana();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetAltoVentana() {
-        System.out.println("getAltoVentana");
-        Buscaminas instance = null;
-        int expResult = 0;
-        int result = instance.getAltoVentana();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetBloquesFila() {
-        System.out.println("getBloquesFila");
-        Buscaminas instance = null;
-        int expResult = 0;
-        int result = instance.getBloquesFila();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetBloquesColumna() {
-        System.out.println("getBloquesColumna");
-        Buscaminas instance = null;
-        int expResult = 0;
-        int result = instance.getBloquesColumna();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetNumeroMinas() {
-        System.out.println("getNumeroMinas");
-        Buscaminas instance = null;
-        int expResult = 0;
-        int result = instance.getNumeroMinas();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetBanderasRestantes() {
-        System.out.println("getBanderasRestantes");
-        Buscaminas instance = null;
-        int expResult = 0;
-        int result = instance.getBanderasRestantes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetCantidadCasillas() {
-        System.out.println("getCantidadCasillas");
-        Buscaminas instance = null;
-        int expResult = 0;
-        int result = instance.getCantidadCasillas();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetCasillas() {
-        System.out.println("getCasillas");
-        Buscaminas instance = null;
-        Casilla[] expResult = null;
-        Casilla[] result = instance.getCasillas();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testSetCasillas() {
-        System.out.println("setCasillas");
-        Casilla[] casillas = null;
-        Buscaminas instance = null;
-        instance.setCasillas(casillas);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testIsCasillasIniciadas() {
-        System.out.println("isCasillasIniciadas");
-        Buscaminas instance = null;
-        boolean expResult = false;
-        boolean result = instance.isCasillasIniciadas();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testGetAlmacen() {
-        System.out.println("getAlmacen");
-        Buscaminas instance = null;
-        MementoAlmacen expResult = null;
-        MementoAlmacen result = instance.getAlmacen();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testIsHasPerdido() {
-        System.out.println("isHasPerdido");
-        Buscaminas instance = null;
-        boolean expResult = false;
-        boolean result = instance.isHasPerdido();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testIsHasGanado() {
-        System.out.println("isHasGanado");
-        Buscaminas instance = null;
-        boolean expResult = false;
-        boolean result = instance.isHasGanado();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
+    }    
 }

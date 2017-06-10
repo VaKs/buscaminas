@@ -32,7 +32,7 @@ public class Buscaminas {
     public void iniciarCasillas() {
         casillasIniciadas = false;
         
-        casillas = new ProxyCasilla[getCantidadCasillas()];
+        casillas = new ProxyCasilla[cantidadCasillas];
         mh = new MouseHandler(this);
         
         int indice = 0;
@@ -53,49 +53,46 @@ public class Buscaminas {
             altoVentana = 300;
             bloquesFila = 10;
             bloquesColumna = 10;
-            cantidadCasillas = getBloquesColumna() * getBloquesFila();
+            cantidadCasillas = bloquesColumna * bloquesFila;
             numeroMinas = 10;
-            setBanderasRestantes(10);
-            nivelActual = nivel;
+            banderasRestantes=10;
         } else if (nivel==nivel.INTERMEDIO) {
             anchoVentana = 320;
             altoVentana = 416;
             bloquesFila = 16;
             bloquesColumna = 16;
             numeroMinas = 70;
-            setBanderasRestantes(70);
-            cantidadCasillas = getBloquesColumna() * getBloquesFila();
-            nivelActual = nivel;
+            banderasRestantes=70;
+            cantidadCasillas = bloquesColumna * bloquesFila;
         } else if (nivel==nivel.EXPERTO) {
             anchoVentana = 400;
             altoVentana = 520;
             bloquesFila = 20;
             bloquesColumna = 20;
             numeroMinas = 150;
-            setBanderasRestantes(150);
-            cantidadCasillas = getBloquesColumna() * getBloquesFila();
-            nivelActual = nivel;
+            banderasRestantes=150;
+            cantidadCasillas = bloquesColumna * bloquesFila; 
         }
-        
-        FBuscaminas.setPanel(getAnchoVentana(), getAltoVentana(), getBloquesFila(), getBloquesColumna(), getNumeroMinas());
+        nivelActual = nivel;
+        FBuscaminas.setPanel(anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas);
         this.iniciarCasillas();
     }
     public void reiniciarNivel(){
-        FBuscaminas.setPanel(getAnchoVentana(), getAltoVentana(), getBloquesFila(), getBloquesColumna(), getNumeroMinas());
+        this.setNivel(nivelActual);
         this.iniciarCasillas();
     }
 
     public void compruebaGanador() {
         boolean todasReveladas = true;
-        for (int k = 0; k < getCantidadCasillas(); k++) {
+        for (int k = 0; k < cantidadCasillas; k++) {
 
             if (!casillas[k].esMina()) {
-                todasReveladas = todasReveladas && getCasillas()[k].isRevelado();
+                todasReveladas = todasReveladas && casillas[k].isRevelado();
             }
         }
         if (todasReveladas) {
-            for (int k = 0; k < getCantidadCasillas(); k++) {
-                getCasillas()[k].removeMouseListener(mh);
+            for (int k = 0; k < cantidadCasillas; k++) {
+                casillas[k].removeMouseListener(mh);
             }
 
             hasGanado = true;
@@ -106,92 +103,92 @@ public class Buscaminas {
 
     public void ponerQuitarBandera(int indiceClicado){
         
-        if (getCasillas()[indiceClicado].tieneBandera()) {
-                    getCasillas()[indiceClicado].guardarMemento();
+        if (casillas[indiceClicado].tieneBandera()) {
+                    casillas[indiceClicado].guardarMemento();
                     banderasRestantes++;
-                    getCasillas()[indiceClicado].setIcon(null);
-                    getCasillas()[indiceClicado].setBandera(false);
+                    casillas[indiceClicado].setIcon(null);
+                    casillas[indiceClicado].setBandera(false);
                     
-                } else if(!casillas[indiceClicado].tieneBandera() && getBanderasRestantes() != 0){
-                    getCasillas()[indiceClicado].guardarMemento();
+                } else if(!casillas[indiceClicado].tieneBandera() && banderasRestantes != 0){
+                    casillas[indiceClicado].guardarMemento();
                     banderasRestantes--;
-                    getCasillas()[indiceClicado].setBandera(true);
+                    casillas[indiceClicado].setBandera(true);
                 }
-            FBuscaminas.actualizarContadorBanderas(getBanderasRestantes());
+            FBuscaminas.actualizarContadorBanderas(banderasRestantes);
     
     }
     public void revelarCasilla(int indiceClicado) {
             
-            if (getCasillas()[indiceClicado].tieneBandera()&& !casillas[indiceClicado].esMina()) {
+            if (casillas[indiceClicado].tieneBandera()&& !casillas[indiceClicado].esMina()) {
                     banderasRestantes++;
-                    getCasillas()[indiceClicado].setIcon(null);
-                    FBuscaminas.actualizarContadorBanderas(getBanderasRestantes());
+                    casillas[indiceClicado].setIcon(null);
+                    FBuscaminas.actualizarContadorBanderas(banderasRestantes);
             }
             
-            if (getCasillas()[indiceClicado].esMina()) {
+            if (casillas[indiceClicado].esMina()) {
                 hasPerdido = true;
-                getCasillas()[indiceClicado].guardarMemento();
+                casillas[indiceClicado].guardarMemento();
                 
-                for (int k = 0; k < getCantidadCasillas(); k++) {
-                    if (getCasillas()[k].esMina()) {
-                        getCasillas()[k].guardarMemento();
-                        getCasillas()[k].revelar();
+                for (int k = 0; k < cantidadCasillas; k++) {
+                    if (casillas[k].esMina()) {
+                        casillas[k].guardarMemento();
+                        casillas[k].revelar();
                     }
-                    getCasillas()[k].removeMouseListener(mh);
+                    casillas[k].removeMouseListener(mh);
                 }
                 
                 FBuscaminas.hasPerdido();
                 
-            }else if (getCasillas()[indiceClicado].esVacia()) {
-                ExpandirDFS(getCasillas()[indiceClicado].getFila(), getCasillas()[indiceClicado].getColumna());
+            }else if (casillas[indiceClicado].esVacia()) {
+                ExpandirDFS(casillas[indiceClicado].getFila(), casillas[indiceClicado].getColumna());
             } else {
-                getCasillas()[indiceClicado].guardarMemento();
-                getCasillas()[indiceClicado].revelar();
+                casillas[indiceClicado].guardarMemento();
+                casillas[indiceClicado].revelar();
             }
     }
 
     public void obtenerValorCasillas() {
 
-        for (int i = 0; i < getCantidadCasillas(); i++) {
+        for (int i = 0; i < cantidadCasillas; i++) {
             int valor = 0;
             int valorFila, valorColumna;
 
             if (!casillas[i].esMina()) {
                 for (int k = 0; k < 8; k++) {
-                    valorFila = getCasillas()[i].getFila() + posicionFilasContiguas[k];
-                    valorColumna = getCasillas()[i].getColumna() + posicionColumnasContiguas[k];
+                    valorFila = casillas[i].getFila() + posicionFilasContiguas[k];
+                    valorColumna = casillas[i].getColumna() + posicionColumnasContiguas[k];
 
-                    if (valorFila >= 0 && valorColumna >= 0 && valorFila < getBloquesFila() && valorColumna < getBloquesColumna()) {
-                        if (getCasillas()[buscarIndiceCasilla(valorFila, valorColumna)].esMina()) {
+                    if (valorFila >= 0 && valorColumna >= 0 && valorFila < bloquesFila && valorColumna < bloquesColumna) {
+                        if (casillas[buscarIndiceCasilla(valorFila, valorColumna)].esMina()) {
                             valor++;
                         }
 
                     }
                 }
-                getCasillas()[i].setValor(valor);
+                casillas[i].setValor(valor);
             }
 
         }
     }
 
     public int buscarIndiceCasilla(int fila, int columna) {
-        return (fila*getBloquesColumna())+columna;
+        return (fila*bloquesColumna)+columna;
     }
 
     public void ExpandirDFS(int fila, int columna) {
 
         int filaAdyacente, columnaAdyacente;
-        getCasillas()[buscarIndiceCasilla(fila, columna)].revelar();
+        casillas[buscarIndiceCasilla(fila, columna)].revelar();
 
         for (int k = 0; k < 8; k++) {
             filaAdyacente = fila + posicionFilasContiguas[k];
             columnaAdyacente = columna + posicionColumnasContiguas[k];
             int indiceAdyacente = buscarIndiceCasilla(filaAdyacente, columnaAdyacente);
-            if ((filaAdyacente >= 0) && (filaAdyacente < getBloquesFila()) && (columnaAdyacente >= 0) && (columnaAdyacente < getBloquesColumna()) && (!casillas[indiceAdyacente].isRevelado())) {
-                if (getCasillas()[indiceAdyacente].esVacia()) {
+            if ((filaAdyacente >= 0) && (filaAdyacente < bloquesFila) && (columnaAdyacente >= 0) && (columnaAdyacente < bloquesColumna) && (!casillas[indiceAdyacente].isRevelado())) {
+                if (casillas[indiceAdyacente].esVacia()) {
                     ExpandirDFS(filaAdyacente, columnaAdyacente);
                 } else if (!casillas[indiceAdyacente].esMina()) {
-                    getCasillas()[indiceAdyacente].revelar();
+                    casillas[indiceAdyacente].revelar();
                 }
             }
 
@@ -202,14 +199,14 @@ public class Buscaminas {
         int indiceAleatorio;
         Random rand = new Random();
 
-        for (int i = 0; i < getNumeroMinas(); i++) {
-            indiceAleatorio = rand.nextInt(getCantidadCasillas());
+        for (int i = 0; i < numeroMinas; i++) {
+            indiceAleatorio = rand.nextInt(cantidadCasillas);
 
-            if (getCasillas()[indiceAleatorio].esMina() || indiceClicado == indiceAleatorio) {
+            if (casillas[indiceAleatorio].esMina() || indiceClicado == indiceAleatorio) {
                 i--;
 
             } else {
-                getCasillas()[indiceAleatorio].setValor(-1);
+                casillas[indiceAleatorio].setValor(-1);
             }
         }
     }
@@ -233,16 +230,16 @@ public class Buscaminas {
     
     public void deshacer(){
         
-        Casilla ultimaCasillaCambiada= getCasillas()[buscarIndiceCasilla(getAlmacen().getFilaUltimoMemento(), getAlmacen().getColumnaUltimoMemento())];
+        Casilla ultimaCasillaCambiada= casillas[buscarIndiceCasilla(getAlmacen().getFilaUltimoMemento(), getAlmacen().getColumnaUltimoMemento())];
                 
                 if (isHasPerdido()) { 
-                    for (int i = 0; i < getNumeroMinas(); i++) {
+                    for (int i = 0; i < numeroMinas; i++) {
                         ultimaCasillaCambiada.restaurarMemento();
-                        ultimaCasillaCambiada=getCasillas()[buscarIndiceCasilla(getAlmacen().getFilaUltimoMemento(), getAlmacen().getColumnaUltimoMemento())];
+                        ultimaCasillaCambiada=casillas[buscarIndiceCasilla(getAlmacen().getFilaUltimoMemento(), getAlmacen().getColumnaUltimoMemento())];
                     }
                     hasPerdido = false;
-                    for (int j = 0; j < getCantidadCasillas(); j++) {
-                        getCasillas()[j].addMouseListener(mh);
+                    for (int j = 0; j < cantidadCasillas; j++) {
+                        casillas[j].addMouseListener(mh);
                     }
                     FBuscaminas.reiniciarPartida();
                 } else if (isHasGanado()) {
@@ -250,13 +247,13 @@ public class Buscaminas {
                     ultimaCasillaCambiada.restaurarMemento();
                     if(ultimaCasillaCambiada.tieneBandera()) banderasRestantes--;
                     
-                    for (int k = 0; k < getCantidadCasillas(); k++) {
-                        getCasillas()[k].addMouseListener(mh);
+                    for (int k = 0; k < cantidadCasillas; k++) {
+                        casillas[k].addMouseListener(mh);
                     }
                     FBuscaminas.reiniciarPartida();
                 } else ultimaCasillaCambiada.restaurarMemento();
                 
-                FBuscaminas.actualizarContadorBanderas(getBanderasRestantes());
+                FBuscaminas.actualizarContadorBanderas(banderasRestantes);
     
     }
 
@@ -299,6 +296,10 @@ public class Buscaminas {
         return casillasIniciadas;
     }
 
+    public void setCasillasIniciadas(boolean casillasIniciadas) {
+        this.casillasIniciadas=casillasIniciadas;
+    }
+    
     public MementoAlmacen getAlmacen() {
         return almacen;
     }
