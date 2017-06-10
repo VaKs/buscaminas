@@ -72,9 +72,9 @@ public class BuscaminasTest {
     @Test
     public void testReiniciarNivel() {
         System.out.println("reiniciarNivel");
-        
-        System.out.println("Reset para nivel principiante");
         instance.setNivel(Nivel.PRINCIPIANTE);
+        
+        System.out.println("Reset para nivel principiante");  
         Casilla casillasPrin[] = instance.getCasillas();
         casillasPrin[5].isRevelado();
         instance.setCasillas(casillasPrin);
@@ -128,11 +128,34 @@ public class BuscaminasTest {
     @Test
     public void testPonerQuitarBandera() {
         System.out.println("ponerQuitarBandera");
-        int indiceClicado = 0;
-        Buscaminas instance = null;
+        int indiceClicado = 5;
+        instance.setNivel(Nivel.PRINCIPIANTE);
+        Casilla casillas[] = instance.getCasillas();
+        System.out.println("Test de bandera puesta");
+        casillas[5].setBandera(true);
+        instance.setBanderasRestantes(9);
+        int banderasActuales = instance.getBanderasRestantes();
         instance.ponerQuitarBandera(indiceClicado);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        if(casillas[5].tieneBandera() == true) fail("No ha quitado la bandera");
+        System.out.println(instance.getBanderasRestantes());
+        if(instance.getBanderasRestantes() != banderasActuales + 1) fail("No ha aumentado las banderas");
+        
+        System.out.println("Test de no hay bandera");
+        casillas[6].setBandera(false);
+        instance.setBanderasRestantes(9);
+        indiceClicado = 6;
+        banderasActuales = instance.getBanderasRestantes();
+        instance.ponerQuitarBandera(indiceClicado);
+        if(casillas[6].tieneBandera() == false) fail("no ha puesto la bandera");
+        if(instance.getBanderasRestantes() != banderasActuales - 1) fail("No ha restado las banderas");
+        
+        System.out.println("Test de banderas restantes 0");
+        casillas[7].setBandera(false);
+        indiceClicado = 7;
+        instance.setBanderasRestantes(0); 
+        instance.ponerQuitarBandera(indiceClicado);
+        if(casillas[7].tieneBandera() == true) fail("ha puesto la bandera con banderas = 0");
+        if(instance.getBanderasRestantes() != 0) fail("ha sumado una bandera, o la ha restado");
     }
 
     @Test
@@ -189,12 +212,12 @@ public class BuscaminasTest {
     }
 
     @Test
-    public void testHeClickado() {
+    public void testIniciarPartida() {
         System.out.println("heClickado");
         boolean clickDerecho = false;
         int indiceClicado = 0;
         Buscaminas instance = null;
-        instance.heClickado(clickDerecho, indiceClicado);
+        instance.iniciarPartida(clickDerecho, indiceClicado);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

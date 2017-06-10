@@ -55,7 +55,7 @@ public class Buscaminas {
             bloquesColumna = 10;
             cantidadCasillas = getBloquesColumna() * getBloquesFila();
             numeroMinas = 10;
-            banderasRestantes=10;
+            setBanderasRestantes(10);
             nivelActual = nivel;
         } else if (nivel==nivel.INTERMEDIO) {
             anchoVentana = 320;
@@ -63,7 +63,7 @@ public class Buscaminas {
             bloquesFila = 16;
             bloquesColumna = 16;
             numeroMinas = 70;
-            banderasRestantes=70;
+            setBanderasRestantes(70);
             cantidadCasillas = getBloquesColumna() * getBloquesFila();
             nivelActual = nivel;
         } else if (nivel==nivel.EXPERTO) {
@@ -72,7 +72,7 @@ public class Buscaminas {
             bloquesFila = 20;
             bloquesColumna = 20;
             numeroMinas = 150;
-            banderasRestantes=150;
+            setBanderasRestantes(150);
             cantidadCasillas = getBloquesColumna() * getBloquesFila();
             nivelActual = nivel;
         }
@@ -215,7 +215,7 @@ public class Buscaminas {
     }
 
     
-    public void heClickado(boolean clickDerecho, int indiceClicado){                
+    public void iniciarPartida(boolean clickDerecho, int indiceClicado){                
             if (this.isCasillasIniciadas() == false) {
 
                 this.ponerMinas(indiceClicado);
@@ -313,6 +313,9 @@ public class Buscaminas {
 
     public Nivel getNivelActual() {
         return nivelActual;
+    }
+    public void setBanderasRestantes(int banderasRestantes) {
+        this.banderasRestantes = banderasRestantes;
     }
 
 }

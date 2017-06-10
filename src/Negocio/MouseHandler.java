@@ -26,7 +26,7 @@ public class MouseHandler extends MouseAdapter {
         int fila = casillaClicada.getFila();
         int indiceClicado = buscaminas.buscarIndiceCasilla(fila, columna);
             
-        buscaminas.heClickado(clickDerecho, indiceClicado);
+        buscaminas.iniciarPartida(clickDerecho, indiceClicado);
 
         }
     
