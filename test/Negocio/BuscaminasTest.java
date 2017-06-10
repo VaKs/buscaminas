@@ -18,15 +18,17 @@ public class BuscaminasTest {
     @Test
     public void testIniciarCasillas() {
         System.out.println("iniciarCasillas");
-        instance.iniciarCasillas();
-        Casilla[] casillas = instance.getCasillas();
+        instance.setNivel(Nivel.PRINCIPIANTE);
         int filas=instance.getBloquesFila();
         int columnas = instance.getBloquesColumna();
-        if(filas*columnas!=casillas.length) fail("No hay el numero de casillas que deberia");
+        instance.iniciarCasillas();
         
+        Casilla[] casillas = instance.getCasillas();
+        
+        if(filas*columnas!=casillas.length) fail("No hay el numero de casillas que deberia");
+
         for(int i=0; i<casillas.length;i++){
             if(!(casillas[i] instanceof ProxyCasilla)) fail("No es del tipo proxyCasilla");
-            if(casillas[i].getMouseListeners().length!=1) fail("Numero de mose liseners incorrecto");
         }
         
     }

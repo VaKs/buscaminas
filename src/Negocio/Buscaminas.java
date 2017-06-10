@@ -35,8 +35,8 @@ public class Buscaminas {
         mh = new MouseHandler(this);
         
         int indice = 0;
-        for (int i = 0; i < getBloquesFila(); i++) {
-            for (int j = 0; j < getBloquesColumna(); j++) {
+        for (int i = 0; i < bloquesFila; i++) {
+            for (int j = 0; j < bloquesColumna; j++) {
                 casillas[indice] = fabricaCasilla.crearCasilla(i, j);
                 casillas[indice].addMouseListener(mh);
                 FBuscaminas.añadirCasillaAlPanel(casillas[indice]);
