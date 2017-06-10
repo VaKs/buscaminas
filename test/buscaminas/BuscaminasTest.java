@@ -34,7 +34,7 @@ public class BuscaminasTest {
      * Test of reset method, of class Buscaminas.
      */
     @Test
-    public void testReset() {
+    public void testiniciarCasillas() {
         
         System.out.println("test del reset");
         

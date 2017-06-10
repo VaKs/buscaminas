@@ -233,7 +233,7 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
         fmReloj.pararReloj();
         JOptionPane.showMessageDialog(null, "Has ganado!");
     }
-    public void actualizarContadorBnderas(int banderasRestantes){
+    public void actualizarContadorBanderas(int banderasRestantes){
         banderasRestantesText.setText("" + banderasRestantes);
     }
     public void hasPerdido(){

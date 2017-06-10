@@ -113,7 +113,7 @@ public class Buscaminas {
                     banderasRestantes--;
                     casillas[indiceClicado].setBandera(true);
                 }
-            FBuscaminas.actualizarContadorBnderas(banderasRestantes);
+            FBuscaminas.actualizarContadorBanderas(banderasRestantes);
     
     }
     public void revelarCasilla(int indiceClicado) {
@@ -121,7 +121,7 @@ public class Buscaminas {
             if (casillas[indiceClicado].tieneBandera()&& !casillas[indiceClicado].esMina()) {
                     banderasRestantes++;
                     casillas[indiceClicado].setIcon(null);
-                    FBuscaminas.actualizarContadorBnderas(banderasRestantes);
+                    FBuscaminas.actualizarContadorBanderas(banderasRestantes);
             }
             
             if (casillas[indiceClicado].esMina()) {
@@ -252,7 +252,7 @@ public class Buscaminas {
                     FBuscaminas.reiniciarPartida();
                 } else ultimaCasillaCambiada.restaurarMemento();
                 
-                FBuscaminas.actualizarContadorBnderas(banderasRestantes);
+                FBuscaminas.actualizarContadorBanderas(banderasRestantes);
     
     }
 
