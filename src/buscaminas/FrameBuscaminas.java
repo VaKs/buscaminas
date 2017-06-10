@@ -35,15 +35,16 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
     FrameReloj fmReloj;
     Point p;
     
-    public FrameBuscaminas(Buscaminas buscaminas){
+    public FrameBuscaminas(){
         super("Buscaminas");
         
-        this.buscaminas=buscaminas;
+        this.buscaminas=new Buscaminas(this);
         
         this.setLocation(400, 300);
-        //this.buscaminas.setNivel(1);
         this.setIcono();
+        this.buscaminas.setNivel(Nivel.PRINCIPIANTE);
         this.setMenu();
+        
 
         
     }
@@ -135,7 +136,7 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        buscaminas.setNivel(1);
+                        buscaminas.setNivel(Nivel.PRINCIPIANTE);
                     }
                 });
 
@@ -146,7 +147,7 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
                         buscaminas.reset();
-                        buscaminas.setNivel(1);
+                        buscaminas.setNivel(Nivel.PRINCIPIANTE);
                         panelb.revalidate();
                         panelb.repaint();
                         principiante.setSelected(true);
@@ -161,7 +162,7 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
                         buscaminas.reset();
-                        buscaminas.setNivel(2);
+                        buscaminas.setNivel(Nivel.INTERMEDIO);
                         panelb.revalidate();
                         panelb.repaint();
                         intermedio.setSelected(true);
@@ -176,7 +177,7 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
                     public void actionPerformed(ActionEvent e) {
                         panelb.removeAll();
                         buscaminas.reset();
-                        buscaminas.setNivel(3);
+                        buscaminas.setNivel(Nivel.EXPERTO);
                         panelb.revalidate();
                         panelb.repaint();
                         intermedio.setSelected(false);

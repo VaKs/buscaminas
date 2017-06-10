@@ -8,8 +8,7 @@ public class Buscaminas {
     
     FrameBuscaminas FBuscaminas;
 
-    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0, level = 1;
-            
+    int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0;
     int cantidadCasillas;
     int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
     int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
@@ -21,9 +20,9 @@ public class Buscaminas {
     boolean hasGanado = false;
     FabricaCasilla fabricaCasilla = FabricaCasilla.getFabrica();
 
-    public Buscaminas() {
+    public Buscaminas(FrameBuscaminas fb) {
         
-        FBuscaminas= new FrameBuscaminas(this);
+        FBuscaminas= fb;
         this.reset();
     }
 
@@ -46,22 +45,22 @@ public class Buscaminas {
         }
     }
 
-    public void setNivel(int level) {
-        if (level == 1) {
+    public void setNivel(Nivel nivel) {
+        if (nivel==nivel.PRINCIPIANTE) {
             anchoVentana = 200;
             altoVentana = 300;
             bloquesFila = 10;
             bloquesColumna = 10;
             cantidadCasillas = bloquesColumna * bloquesFila;
             numeroMinas = 10;
-        } else if (level == 2) {
+        } else if (nivel==nivel.INTERMEDIO) {
             anchoVentana = 320;
             altoVentana = 416;
             bloquesFila = 16;
             bloquesColumna = 16;
             numeroMinas = 70;
             cantidadCasillas = bloquesColumna * bloquesFila;
-        } else if (level == 3) {
+        } else if (nivel==nivel.EXPERTO) {
             anchoVentana = 400;
             altoVentana = 520;
             bloquesFila = 20;
