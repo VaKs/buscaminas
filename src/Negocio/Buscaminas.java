@@ -21,6 +21,7 @@ public class Buscaminas {
     private boolean hasPerdido = false;
     private boolean hasGanado = false;
     private FabricaCasilla fabricaCasilla = FabricaCasilla.getFabrica();
+    private Nivel nivelActual;
 
     public Buscaminas(FrameBuscaminas fb) {
         
@@ -55,6 +56,7 @@ public class Buscaminas {
             cantidadCasillas = getBloquesColumna() * getBloquesFila();
             numeroMinas = 10;
             banderasRestantes=10;
+            nivelActual = nivel;
         } else if (nivel==nivel.INTERMEDIO) {
             anchoVentana = 320;
             altoVentana = 416;
@@ -63,6 +65,7 @@ public class Buscaminas {
             numeroMinas = 70;
             banderasRestantes=70;
             cantidadCasillas = getBloquesColumna() * getBloquesFila();
+            nivelActual = nivel;
         } else if (nivel==nivel.EXPERTO) {
             anchoVentana = 400;
             altoVentana = 520;
@@ -71,6 +74,7 @@ public class Buscaminas {
             numeroMinas = 150;
             banderasRestantes=150;
             cantidadCasillas = getBloquesColumna() * getBloquesFila();
+            nivelActual = nivel;
         }
         
         FBuscaminas.setPanel(getAnchoVentana(), getAltoVentana(), getBloquesFila(), getBloquesColumna(), getNumeroMinas());
@@ -305,6 +309,10 @@ public class Buscaminas {
 
     public boolean isHasGanado() {
         return hasGanado;
+    }
+
+    public Nivel getNivelActual() {
+        return nivelActual;
     }
 
 }

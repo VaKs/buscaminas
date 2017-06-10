@@ -1,6 +1,8 @@
 package Negocio;
 
 import Presentacion.Casilla;
+import Presentacion.CasillaMina;
+import Presentacion.CasillaNumero;
 import Presentacion.FrameBuscaminas;
 import Presentacion.ProxyCasilla;
 import org.junit.AfterClass;
@@ -36,20 +38,82 @@ public class BuscaminasTest {
     @Test
     public void testSetNivel() {
         System.out.println("setNivel");
-        Nivel nivel = null;
-        Buscaminas instance = null;
-        instance.setNivel(nivel);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("Principiante");
+        instance.setNivel(Nivel.PRINCIPIANTE);
+        if(instance.getAltoVentana()!= 300) fail("La ventana no es lo alto que debería");
+        if(instance.getAnchoVentana()!= 200) fail("La ventana no es lo ancho que debería");
+        if(instance.getBloquesColumna() != 10) fail("No hay el numero de columnas que deberia");
+        if(instance.getBloquesFila() != 10) fail("No hay el numero de filas que deberia");
+        if(instance.getCantidadCasillas()!= 100) fail("No hay el numero de casillas que deberia");
+        if(instance.getNumeroMinas()!= 10) fail("No hay el numero de minas que deberia");
+        if(instance.getBanderasRestantes()!= 10) fail("No hay el numero de banderas que deberia");
+        
+        System.out.println("Intermedio");
+        instance.setNivel(Nivel.INTERMEDIO);
+        if(instance.getAltoVentana()!= 416) fail("La ventana no es lo alto que debería");
+        if(instance.getAnchoVentana()!= 320) fail("La ventana no es lo ancho que debería");
+        if(instance.getBloquesColumna() != 16) fail("No hay el numero de columnas que deberia");
+        if(instance.getBloquesFila() != 16) fail("No hay el numero de filas que deberia");
+        if(instance.getCantidadCasillas()!= 256) fail("No hay el numero de casillas que deberia");
+        if(instance.getNumeroMinas()!= 70) fail("No hay el numero de minas que deberia");
+        if(instance.getBanderasRestantes()!= 70) fail("No hay el numero de banderas que deberia");
+        
+        System.out.println("Experto");
+        instance.setNivel(Nivel.EXPERTO);
+        if(instance.getAltoVentana()!= 520) fail("La ventana no es lo alto que debería");
+        if(instance.getAnchoVentana()!= 400) fail("La ventana no es lo ancho que debería");
+        if(instance.getBloquesColumna() != 20) fail("No hay el numero de columnas que deberia");
+        if(instance.getBloquesFila() != 20) fail("No hay el numero de filas que deberia");
+        if(instance.getCantidadCasillas()!= 400) fail("No hay el numero de casillas que deberia");
+        if(instance.getNumeroMinas()!= 150) fail("No hay el numero de minas que deberia");
+        if(instance.getBanderasRestantes()!= 150) fail("No hay el numero de banderas que deberia");
     }
 
     @Test
     public void testReiniciarNivel() {
         System.out.println("reiniciarNivel");
-        Buscaminas instance = null;
+        
+        System.out.println("Reset para nivel principiante");
+        instance.setNivel(Nivel.PRINCIPIANTE);
+        Casilla casillasPrin[] = instance.getCasillas();
+        casillasPrin[5].isRevelado();
+        instance.setCasillas(casillasPrin);
+        int fila = instance.getBloquesFila();
+        int columna = instance.getBloquesColumna();
         instance.reiniciarNivel();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Casilla casillasDespuesReinicioPrin[] = instance.getCasillas();
+        if(instance.getNivelActual()!= Nivel.PRINCIPIANTE) fail("El nivel ha cambiado");
+        if(fila != instance.getBloquesFila()) fail("El numero de filas ha cambiado");
+        if(columna != instance.getBloquesColumna()) fail("El numero de columnas ha cambiado");
+        if(casillasDespuesReinicioPrin[5].isRevelado() == true) fail("No se han tapado las casillas");
+        
+        System.out.println("Reset para nivel intermedio");
+        instance.setNivel(Nivel.INTERMEDIO);
+        Casilla casillasInt[] = instance.getCasillas();
+        casillasInt[5].isRevelado();
+        instance.setCasillas(casillasInt);
+        fila = instance.getBloquesFila();
+        columna = instance.getBloquesColumna();
+        instance.reiniciarNivel();
+        Casilla casillasDespuesReinicioInt[] = instance.getCasillas();
+        if(instance.getNivelActual()!= Nivel.INTERMEDIO) fail("El nivel ha cambiado");
+        if(fila != instance.getBloquesFila()) fail("El numero de filas ha cambiado");
+        if(columna != instance.getBloquesColumna()) fail("El numero de columnas ha cambiado");
+        if(casillasDespuesReinicioInt[5].isRevelado() == true) fail("No se han tapado las casillas");
+        
+        System.out.println("Reset para nivel experto");
+        instance.setNivel(Nivel.EXPERTO);
+        Casilla casillasExp[] = instance.getCasillas();
+        casillasExp[5].isRevelado();
+        instance.setCasillas(casillasExp);
+        fila = instance.getBloquesFila();
+        columna = instance.getBloquesColumna();
+        instance.reiniciarNivel();
+        Casilla casillasDespuesReinicioExp[] = instance.getCasillas();
+        if(instance.getNivelActual()!= Nivel.EXPERTO) fail("El nivel ha cambiado");
+        if(fila != instance.getBloquesFila()) fail("El numero de filas ha cambiado");
+        if(columna != instance.getBloquesColumna()) fail("El numero de columnas ha cambiado");
+        if(casillasDespuesReinicioExp[5].isRevelado() == true) fail("No se han tapado las casillas");
     }
 
     @Test
