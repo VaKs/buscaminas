@@ -285,9 +285,7 @@ public class BuscaminasTest {
         columna = 5;
         result = instance.buscarIndiceCasilla(fila, columna);
         assertEquals("No ha encontrado la casilla correcta",casillas[15], casillas[result]);
-        assertFalse("No ha encontrado la casila",result==-1);
-        
-        
+        assertFalse("No ha encontrado la casila",result==-1); 
     }
 
     @Test
