@@ -16,7 +16,7 @@ public class Buscaminas {
     private int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
     private Casilla[] casillas;
     private boolean casillasIniciadas = false;
-    private MouseHandler mh;
+    private MouseHandlerCasilla mh;
     private MementoAlmacen almacen = MementoAlmacen.getAlmacen();
     private boolean hasPerdido = false;
     private boolean hasGanado = false;
@@ -33,7 +33,7 @@ public class Buscaminas {
         casillasIniciadas = false;
         
         casillas = new ProxyCasilla[cantidadCasillas];
-        mh = new MouseHandler(this);
+        mh = new MouseHandlerCasilla(this);
         
         int indice = 0;
         for (int i = 0; i < bloquesFila; i++) {

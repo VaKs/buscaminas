@@ -5,11 +5,11 @@ import Presentacion.Casilla;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MouseHandler extends MouseAdapter {
+public class MouseHandlerCasilla extends MouseAdapter {
 
     Buscaminas buscaminas;
 
-    public MouseHandler(Buscaminas buscamina) {
+    public MouseHandlerCasilla(Buscaminas buscamina) {
         buscaminas = buscamina;
     }
 
