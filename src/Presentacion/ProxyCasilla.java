@@ -49,6 +49,13 @@ public class ProxyCasilla extends Casilla {
         }
         return this.fila;
     }
+       @Override
+    public int getValor() {
+        if (casilla != null) {
+            return casilla.getValor();
+        }
+        return -2;
+    }
 
     @Override
     public int getColumna() {

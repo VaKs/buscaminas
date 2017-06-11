@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Presentacion;
 
 import Negocio.Memento;
@@ -104,13 +100,10 @@ public abstract class Casilla extends JButton {
         
         if (memento.getBandera()) {
             this.setIcon(iconos[10]);
-//            banderasRestantes--;
 
         } else if(this.tieneBandera()) {
 
             this.setIcon(null);
-//            banderasRestantes++;
-//            tf_mine.setText("" + banderasRestantes);
         }
         this.setBandera(memento.getBandera());
     }

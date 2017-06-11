@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Negocio;
 
 import Presentacion.Casilla;
@@ -26,7 +22,7 @@ public class MouseHandler extends MouseAdapter {
         int fila = casillaClicada.getFila();
         int indiceClicado = buscaminas.buscarIndiceCasilla(fila, columna);
             
-        buscaminas.iniciarPartida(clickDerecho, indiceClicado);
+        buscaminas.primerClick(clickDerecho, indiceClicado);
 
         }
     
