@@ -90,7 +90,7 @@ public class FrameBuscaminas extends JFrame implements ActionListener, Container
         panelCabecera.setLayout(new BorderLayout());
         panelCabecera.add(banderasRestantesText, BorderLayout.WEST);
         panelCabecera.add(reiniciarBoton, BorderLayout.CENTER);
-        panelCabecera.add(fmReloj.tf_time, BorderLayout.EAST);
+        panelCabecera.add(fmReloj.getTiempoTextField(), BorderLayout.EAST);
         panelCabecera.setBorder(BorderFactory.createLoweredBevelBorder());
 
         

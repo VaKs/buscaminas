@@ -4,24 +4,25 @@ package Presentacion;
 import Negocio.Reloj;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.TextField;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 public class FrameReloj extends JFrame{
     
-    JTextField tf_time;
-    long tiempoInicio=0;
-    Reloj reloj;
-    int tiempoActual=0;
+    private JTextField tiempoTextField;
+    private long tiempoInicio=0;
+    private Reloj reloj;
+    private int tiempoActual=0;
     
     public FrameReloj(){
-        tf_time = new JTextField("000", 3);
-        tf_time.setEditable(false);
-        tf_time.setFont(new Font("DigtalFont.TTF", Font.BOLD, 25));
-        tf_time.setBackground(Color.BLACK);
-        tf_time.setForeground(Color.RED);
-        tf_time.setBorder(BorderFactory.createLoweredBevelBorder());
+        tiempoTextField = new JTextField("000", 3);
+        tiempoTextField.setEditable(false);
+        tiempoTextField.setFont(new Font("DigtalFont.TTF", Font.BOLD, 25));
+        tiempoTextField.setBackground(Color.BLACK);
+        tiempoTextField.setForeground(Color.RED);
+        tiempoTextField.setBorder(BorderFactory.createLoweredBevelBorder());
     }
     public void iniciarReloj(){
         reloj=new Reloj(System.currentTimeMillis(),this);
@@ -38,13 +39,16 @@ public class FrameReloj extends JFrame{
     
     public void mostrarTiempo(int tiempo) {
         
-        if (tiempo >= 0 && tiempo < 9) {
-            tf_time.setText("00" + tiempo);
-        } else if (tiempo > 9 && tiempo < 99) {
-            tf_time.setText("0" + tiempo);
-        } else if (tiempo > 99 && tiempo < 999) {
-            tf_time.setText("" + tiempo);
+        if (tiempo >= 0 && tiempo <= 9) {
+            tiempoTextField.setText("00" + tiempo);
+        } else if (tiempo > 9 && tiempo <= 99) {
+            tiempoTextField.setText("0" + tiempo);
+        } else if (tiempo > 99 && tiempo <= 999) {
+            tiempoTextField.setText("" + tiempo);
         }
         this.tiempoActual=tiempo;
     } 
+    public JTextField getTiempoTextField(){
+        return tiempoTextField;
+    }
 }
