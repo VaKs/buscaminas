@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package Negocio;
 
@@ -17,7 +12,6 @@ public class Reloj extends Thread{
     private boolean relojActivo=true;
     
     public Reloj(long tiempoInicial, FrameReloj fmReloj){
-//        tiempoInicial=System.currentTimeMillis();
         this.tiempoInicial=tiempoInicial;
         this.fmReloj=fmReloj;
         this.start();

@@ -212,7 +212,7 @@ public class Buscaminas {
     }
 
     
-    public void iniciarPartida(boolean clickDerecho, int indiceClicado){                
+    public void primerClick(boolean clickDerecho, int indiceClicado){                
             if (this.isCasillasIniciadas() == false) {
 
                 this.ponerMinas(indiceClicado);

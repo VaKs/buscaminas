@@ -3,6 +3,7 @@ package Negocio;
 import Presentacion.Casilla;
 import Presentacion.CasillaMina;
 import Presentacion.CasillaNumero;
+import Presentacion.CasillaVacia;
 import Presentacion.FrameBuscaminas;
 import Presentacion.ProxyCasilla;
 import org.junit.AfterClass;
@@ -190,21 +191,79 @@ public class BuscaminasTest {
 
     @Test
     public void testRevelarCasilla() {
+        
         System.out.println("revelarCasilla");
         int indiceClicado = 0;
-        Buscaminas instance = null;
+        instance.setNivel(Nivel.PRINCIPIANTE);
+        fb.iniciarPartida();
+        Casilla[] casillas = instance.getCasillas();
+        System.out.println("test de funcionamiento de revelar casilla vacia");
+        casillas[0].setValor(0);
+        casillas[1].setValor(0);
+        casillas[10].setValor(0);
+        casillas[11].setValor(0);
+        casillas[2].setValor(1);
+        casillas[12].setValor(1);
+        casillas[22].setValor(1);
+        casillas[20].setValor(1);
+        casillas[21].setValor(1);
+        casillas[3].setValor(1);
+        casillas[13].setValor(2);
+        casillas[3].setValor(1);
+        casillas[23].setValor(1);
+        
+        instance.setCasillas(casillas);              
         instance.revelarCasilla(indiceClicado);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        casillas = instance.getCasillas();
+        if(casillas[0].isRevelado() == false) fail("No se ha revelado");
+        if(casillas[1].isRevelado() == false) fail("No se ha revelado");
+        if(casillas[10].isRevelado() == false) fail("No se ha revelado");
+        if(casillas[11].isRevelado() == false) fail("No se ha revelado");
+        if(casillas[2].isRevelado() == false) fail("No Se ha revelado");
+        if(casillas[12].isRevelado() == false) fail("No Se ha revelado");
+        if(casillas[22].isRevelado() == false) fail("No Se ha revelado");
+        if(casillas[20].isRevelado() == false) fail("No Se ha revelado");
+        if(casillas[21].isRevelado() == false) fail("No Se ha revelado");
+        if(casillas[13].isRevelado() == true) fail("Se ha revelado");
+        if(casillas[3].isRevelado() == true) fail("Se ha revelado");
+        if(casillas[23].isRevelado() == true) fail("Se ha revelado");
+        
+        System.out.println("test de bandera sin mina");
+        casillas[13].setValor(2);
+        instance.ponerQuitarBandera(13);
+        instance.setCasillas(casillas);
+        instance.setBanderasRestantes(9);
+        int banderasActuales = instance.getBanderasRestantes();
+        instance.revelarCasilla(13);
+        casillas = instance.getCasillas();
+        if(instance.getBanderasRestantes() != banderasActuales + 1) fail("no ha sumado las banderas");
+        if(casillas[13].isRevelado() == false) fail("no se ha revelado la casilla");
+        
+        System.out.println("Test de revelar casilla mina");
+        casillas[14].setValor(-1);
+        casillas[15].setValor(-1);
+        instance.setCasillas(casillas);
+        instance.revelarCasilla(14);
+        casillas = instance.getCasillas();
+        if(instance.isHasPerdido() == false) fail("no has perdido");
+        if(casillas[14].isRevelado() == false) fail("no se han revelado todas las minas");
+        if(casillas[15].isRevelado() == false) fail("no se han revelado todas las minas");      
     }
 
     @Test
     public void testObtenerValorCasillas() {
         System.out.println("obtenerValorCasillas");
-        Buscaminas instance = null;
+        instance.setNivel(Nivel.PRINCIPIANTE);
+        Casilla[] casillas = instance.getCasillas();
+        casillas[0].setValor(-1);
+        instance.setCasillas(casillas);
         instance.obtenerValorCasillas();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        casillas = instance.getCasillas();
+        if(casillas[1].getValor() != 1) fail("No ha puesto bien el valor");
+        if(casillas[10].getValor() != 1) fail("No ha puesto bien el valor");
+        if(casillas[11].getValor() != 1) fail("No ha puesto bien el valor");
+        
+
     }
 
     @Test
@@ -237,17 +296,6 @@ public class BuscaminasTest {
         int indiceClicado = 0;
         Buscaminas instance = null;
         instance.ponerMinas(indiceClicado);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testIniciarPartida() {
-        System.out.println("heClickado");
-        boolean clickDerecho = false;
-        int indiceClicado = 0;
-        Buscaminas instance = null;
-        instance.iniciarPartida(clickDerecho, indiceClicado);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
