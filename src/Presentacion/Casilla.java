@@ -14,7 +14,7 @@ public abstract class Casilla extends JButton {
     private Integer valor;
     boolean bandera;
     private boolean revelado;
-    MementoAlmacen almacen = MementoAlmacen.getAlmacen();
+    MementoAlmacen almacenMementos = MementoAlmacen.getAlmacen();
 
     public Casilla(int fila, int columna) {
         this.fila=fila;
@@ -90,11 +90,10 @@ public abstract class Casilla extends JButton {
         return valor == 0;
     }
     public void guardarMemento() {
-
-        almacen.addMemento(this.fila, this.columna, this.bandera, this.revelado);
+        almacenMementos.addMemento(this.fila, this.columna, this.bandera, this.revelado);
     }
     public void restaurarMemento() {
-        Memento memento = almacen.getUltimoMemento();
+        Memento memento = almacenMementos.getUltimoMemento();
 
         this.setRevelado(memento.getRevelado());
         
