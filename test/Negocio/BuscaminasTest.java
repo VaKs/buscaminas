@@ -290,14 +290,23 @@ public class BuscaminasTest {
 
     @Test
     public void testPonerMinas() {
-        System.out.println("ponerMinas");
-        int indiceClicado = 0;
-        Buscaminas instance = null;
-        instance.ponerMinas(indiceClicado);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        instance.iniciarCasillas();
+        Casilla[] casillas=instance.getCasillas();
+        
+        for(int i=0;i<instance.getNumeroMinas();i++){
+            assertTrue("Hay minas antes del metodo", casillas[i].esMina());
+        }
+        
+        instance.ponerMinas(1);
+        casillas=instance.getCasillas();
+        int mina=0;
+        for(int i=0;i<instance.getNumeroMinas();i++){
+            if(casillas[i].esMina()) mina++;
+        }
+        assertFalse("No hay el numero de minas que deberia", mina==instance.getNumeroMinas());
+        
 
+    }
     @Test
     public void testDeshacer() {
         System.out.println("deshacer");
