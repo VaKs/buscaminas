@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/VaKs/workspace/buscaminas/src/Presentacion/CasillaMina.java</file>
             <file>file:/C:/Users/VaKs/workspace/buscaminas/test/Negocio/BuscaminasTest.java</file>
-            <file>file:/C:/Users/VaKs/workspace/buscaminas/src/Presentacion/CasillaNumero.java</file>
             <file>file:/C:/Users/VaKs/workspace/buscaminas/src/Negocio/Buscaminas.java</file>
             <file>file:/C:/Users/VaKs/workspace/buscaminas/src/Presentacion/FrameReloj.java</file>
+            <file>file:/C:/Users/VaKs/workspace/buscaminas/src/Negocio/MouseHandlerCasilla.java</file>
+            <file>file:/C:/Users/VaKs/workspace/buscaminas/src/Main.java</file>
             <file>file:/C:/Users/VaKs/workspace/buscaminas/src/Presentacion/FrameBuscaminas.java</file>
         </group>
     </open-files>

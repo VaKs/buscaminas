@@ -10,14 +10,14 @@ public class Buscaminas {
     
     FrameBuscaminas FBuscaminas;
     
-    private int anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas, banderasRestantes = 0;
+    private int anchoVentana, altoVentana, casillasPorFila, casillasPorColumna, numeroMinas, banderasRestantes = 0;
     private int cantidadCasillas;
     private int[] posicionFilasContiguas = {-1, -1, -1, 0, 1, 1, 1, 0};
     private int[] posicionColumnasContiguas = {-1, 0, 1, 1, 1, 0, -1, -1};
     private Casilla[] casillas;
     private boolean casillasIniciadas = false;
     private MouseHandlerCasilla mh;
-    private MementoAlmacen almacen = MementoAlmacen.getAlmacen();
+    private MementoAlmacen almacenMementos = MementoAlmacen.getAlmacen();
     private boolean hasPerdido = false;
     private boolean hasGanado = false;
     private FabricaCasilla fabricaCasilla = FabricaCasilla.getFabrica();
@@ -36,8 +36,8 @@ public class Buscaminas {
         mh = new MouseHandlerCasilla(this);
         
         int indice = 0;
-        for (int i = 0; i < bloquesFila; i++) {
-            for (int j = 0; j < bloquesColumna; j++) {
+        for (int i = 0; i < casillasPorFila; i++) {
+            for (int j = 0; j < casillasPorColumna; j++) {
                 casillas[indice] = fabricaCasilla.crearCasilla(i, j);
                 casillas[indice].addMouseListener(mh);
                 FBuscaminas.añadirCasillaAlPanel(casillas[indice]);
@@ -51,30 +51,30 @@ public class Buscaminas {
         if (nivel==nivel.PRINCIPIANTE) {
             anchoVentana = 200;
             altoVentana = 300;
-            bloquesFila = 10;
-            bloquesColumna = 10;
-            cantidadCasillas = bloquesColumna * bloquesFila;
+            casillasPorFila = 10;
+            casillasPorColumna = 10;
+            cantidadCasillas = casillasPorColumna * casillasPorFila;
             numeroMinas = 10;
             banderasRestantes=10;
         } else if (nivel==nivel.INTERMEDIO) {
             anchoVentana = 320;
             altoVentana = 416;
-            bloquesFila = 16;
-            bloquesColumna = 16;
+            casillasPorFila = 16;
+            casillasPorColumna = 16;
             numeroMinas = 70;
             banderasRestantes=70;
-            cantidadCasillas = bloquesColumna * bloquesFila;
+            cantidadCasillas = casillasPorColumna * casillasPorFila;
         } else if (nivel==nivel.EXPERTO) {
             anchoVentana = 400;
             altoVentana = 520;
-            bloquesFila = 20;
-            bloquesColumna = 20;
+            casillasPorFila = 20;
+            casillasPorColumna = 20;
             numeroMinas = 150;
             banderasRestantes=150;
-            cantidadCasillas = bloquesColumna * bloquesFila; 
+            cantidadCasillas = casillasPorColumna * casillasPorFila; 
         }
         nivelActual = nivel;
-        FBuscaminas.setPanel(anchoVentana, altoVentana, bloquesFila, bloquesColumna, numeroMinas);
+        FBuscaminas.setPanel(anchoVentana, altoVentana, casillasPorFila, casillasPorColumna, numeroMinas);
         this.iniciarCasillas();
     }
     public void reiniciarNivel(){
@@ -158,7 +158,7 @@ public class Buscaminas {
                     valorFila = casillas[i].getFila() + posicionFilasContiguas[k];
                     valorColumna = casillas[i].getColumna() + posicionColumnasContiguas[k];
 
-                    if (valorFila >= 0 && valorColumna >= 0 && valorFila < bloquesFila && valorColumna < bloquesColumna) {
+                    if (valorFila >= 0 && valorColumna >= 0 && valorFila < casillasPorFila && valorColumna < casillasPorColumna) {
                         if (casillas[buscarIndiceCasilla(valorFila, valorColumna)].esMina()) {
                             valor++;
                         }
@@ -172,7 +172,7 @@ public class Buscaminas {
     }
 
     public int buscarIndiceCasilla(int fila, int columna) {
-        return (fila*bloquesColumna)+columna;
+        return (fila*casillasPorColumna)+columna;
     }
 
     public void ExpandirDFS(int fila, int columna) {
@@ -184,7 +184,7 @@ public class Buscaminas {
             filaAdyacente = fila + posicionFilasContiguas[k];
             columnaAdyacente = columna + posicionColumnasContiguas[k];
             int indiceAdyacente = buscarIndiceCasilla(filaAdyacente, columnaAdyacente);
-            if ((filaAdyacente >= 0) && (filaAdyacente < bloquesFila) && (columnaAdyacente >= 0) && (columnaAdyacente < bloquesColumna) && (!casillas[indiceAdyacente].isRevelado())) {
+            if ((filaAdyacente >= 0) && (filaAdyacente < casillasPorFila) && (columnaAdyacente >= 0) && (columnaAdyacente < casillasPorColumna) && (!casillas[indiceAdyacente].isRevelado())) {
                 if (casillas[indiceAdyacente].esVacia()) {
                     ExpandirDFS(filaAdyacente, columnaAdyacente);
                 } else if (!casillas[indiceAdyacente].esMina()) {
@@ -230,12 +230,12 @@ public class Buscaminas {
     
     public void deshacer(){
         
-        Casilla ultimaCasillaCambiada= casillas[buscarIndiceCasilla(getAlmacen().getFilaUltimoMemento(), getAlmacen().getColumnaUltimoMemento())];
+        Casilla ultimaCasillaCambiada= casillas[buscarIndiceCasilla(almacenMementos.getFilaUltimoMemento(), almacenMementos.getColumnaUltimoMemento())];
                 
                 if (isHasPerdido()) { 
                     for (int i = 0; i < numeroMinas; i++) {
                         ultimaCasillaCambiada.restaurarMemento();
-                        ultimaCasillaCambiada=casillas[buscarIndiceCasilla(getAlmacen().getFilaUltimoMemento(), getAlmacen().getColumnaUltimoMemento())];
+                        ultimaCasillaCambiada=casillas[buscarIndiceCasilla(almacenMementos.getFilaUltimoMemento(), almacenMementos.getColumnaUltimoMemento())];
                     }
                     hasPerdido = false;
                     for (int j = 0; j < cantidadCasillas; j++) {
@@ -265,12 +265,12 @@ public class Buscaminas {
         return altoVentana;
     }
 
-    public int getBloquesFila() {
-        return bloquesFila;
+    public int getCasillasPorFila() {
+        return casillasPorFila;
     }
 
-    public int getBloquesColumna() {
-        return bloquesColumna;
+    public int getCasillasPorColumna() {
+        return casillasPorColumna;
     }
 
     public int getNumeroMinas() {
@@ -298,10 +298,6 @@ public class Buscaminas {
 
     public void setCasillasIniciadas(boolean casillasIniciadas) {
         this.casillasIniciadas=casillasIniciadas;
-    }
-    
-    public MementoAlmacen getAlmacen() {
-        return almacen;
     }
 
     public boolean isHasPerdido() {
