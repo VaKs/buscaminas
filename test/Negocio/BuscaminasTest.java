@@ -210,11 +210,8 @@ public class BuscaminasTest {
     @Test
     public void testBuscarIndiceCasilla() {
         System.out.println("buscarIndiceCasilla");
+        instance.setNivel(Nivel.PRINCIPIANTE);
         
-        instance.ponerMinas(1);
-        instance.obtenerValorCasillas();
-        instance.setCasillasIniciadas(true);
-        fb.iniciarPartida();
         Casilla[] casillas = instance.getCasillas();
         
         int fila = 1;
@@ -225,7 +222,7 @@ public class BuscaminasTest {
         fila = 5;
         columna = 5;
         result = instance.buscarIndiceCasilla(fila, columna);
-        assertEquals("No ha encontrado la casilla correcta",casillas[15], casillas[result]);
+        assertEquals("No ha encontrado la casilla correcta",casillas[55], casillas[result]);
         assertFalse("No ha encontrado la casila",result==-1);
         
         
@@ -233,20 +230,22 @@ public class BuscaminasTest {
 
     @Test
     public void testPonerMinas() {
-        instance.iniciarCasillas();
+        
         Casilla[] casillas=instance.getCasillas();
         
         for(int i=0;i<instance.getNumeroMinas();i++){
             assertTrue("Hay minas antes del metodo", casillas[i].esMina());
         }
-        
+        instance.setNivel(Nivel.PRINCIPIANTE);
         instance.ponerMinas(1);
+
         casillas=instance.getCasillas();
+        
         int mina=0;
-        for(int i=0;i<instance.getNumeroMinas();i++){
+        for(int i=0;i<instance.getCantidadCasillas();i++){
             if(casillas[i].esMina()) mina++;
         }
-        assertFalse("No hay el numero de minas que deberia", mina==instance.getNumeroMinas());
+        assertTrue("No hay el numero de minas que deberia", mina==instance.getNumeroMinas());
         
 
     }
@@ -265,9 +264,27 @@ public class BuscaminasTest {
     @Test
     public void testDeshacer() {
         System.out.println("deshacer");
-        Buscaminas instance = null;
+        instance.setNivel(Nivel.PRINCIPIANTE);
+        instance.ponerMinas(1);
+        instance.obtenerValorCasillas();
+        
+        
+        Casilla[] casillas=instance.getCasillas();
+        
+        casillas[2].setValor(2);
+        casillas[31].setValor(3);
+        
+        instance.setCasillas(casillas);
+        
+        instance.revelarCasilla(2);
+        instance.ponerQuitarBandera(31);
+                
         instance.deshacer();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue("Error 1: no ha deshecho la bandera", !casillas[31].tieneBandera());
+        instance.deshacer();        
+        assertTrue("Error 2: no ha deshecho el revelado", !casillas[2].isRevelado());
+
+        
+        
     }    
 }
