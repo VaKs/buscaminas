@@ -79,7 +79,6 @@ public class Buscaminas {
     }
     public void reiniciarNivel(){
         this.setNivel(nivelActual);
-        this.iniciarCasillas();
     }
 
     public void compruebaGanador() {
